@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		6FC720C0D5C4C80C006C2F94 /* Pods_MovieDBTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DB329E4DC264AA11181883F /* Pods_MovieDBTests.framework */; };
+		957E91BF22B8859E0042CC4F /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957E91BE22B8859E0042CC4F /* MainViewModel.swift */; };
+		957E91C322B886680042CC4F /* MainUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957E91C222B886680042CC4F /* MainUseCase.swift */; };
+		957E91C522B886740042CC4F /* MainNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957E91C422B886740042CC4F /* MainNavigator.swift */; };
 		958A1C4222B7719F003938F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 958A1C4022B7719F003938F1 /* Main.storyboard */; };
 		958A1C4422B771A4003938F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 958A1C4322B771A4003938F1 /* Assets.xcassets */; };
 		958A1CB522B771F3003938F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958A1C4F22B771EF003938F1 /* AppDelegate.swift */; };
@@ -50,6 +53,9 @@
 /* Begin PBXFileReference section */
 		2DB329E4DC264AA11181883F /* Pods_MovieDBTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieDBTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		600BF2CA76F7C1F5303E66E8 /* Pods-MovieDBTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieDBTests.debug.xcconfig"; path = "Target Support Files/Pods-MovieDBTests/Pods-MovieDBTests.debug.xcconfig"; sourceTree = "<group>"; };
+		957E91BE22B8859E0042CC4F /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		957E91C222B886680042CC4F /* MainUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUseCase.swift; sourceTree = "<group>"; };
+		957E91C422B886740042CC4F /* MainNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigator.swift; sourceTree = "<group>"; };
 		958A1C3922B7719F003938F1 /* MovieDB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieDB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		958A1C4122B7719F003938F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		958A1C4322B771A4003938F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -305,6 +311,9 @@
 			children = (
 				958A1D1E22B78014003938F1 /* MainAssembler.swift */,
 				958A1D1F22B78014003938F1 /* MainViewController.swift */,
+				957E91BE22B8859E0042CC4F /* MainViewModel.swift */,
+				957E91C222B886680042CC4F /* MainUseCase.swift */,
+				957E91C422B886740042CC4F /* MainNavigator.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -494,18 +503,16 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-MovieDBTests/Pods-MovieDBTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/Nimble/Nimble.framework",
-				"${BUILT_PRODUCTS_DIR}/Quick/Quick.framework",
+				"${BUILT_PRODUCTS_DIR}/Mockingjay/Mockingjay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxBlocking/RxBlocking.framework",
-				"${BUILT_PRODUCTS_DIR}/RxTest/RxTest.framework",
+				"${BUILT_PRODUCTS_DIR}/URITemplate/URITemplate.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nimble.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Quick.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mockingjay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxBlocking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxTest.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/URITemplate.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -570,6 +577,7 @@
 			files = (
 				958A1CB522B771F3003938F1 /* AppDelegate.swift in Sources */,
 				958A1D2122B78014003938F1 /* MainViewController.swift in Sources */,
+				957E91C322B886680042CC4F /* MainUseCase.swift in Sources */,
 				958A1D1322B77986003938F1 /* Constants.swift in Sources */,
 				958A1D2022B78014003938F1 /* MainAssembler.swift in Sources */,
 				958A1CBD22B771F3003938F1 /* RepositoriesAssembler.swift in Sources */,
@@ -579,6 +587,7 @@
 				958A1CCC22B771F3003938F1 /* UITableView+.swift in Sources */,
 				958A1CB922B771F3003938F1 /* Assembler.swift in Sources */,
 				958A1CCF22B771F3003938F1 /* UIViewController+Rx.swift in Sources */,
+				957E91C522B886740042CC4F /* MainNavigator.swift in Sources */,
 				958A1CD322B771F3003938F1 /* AppUseCase.swift in Sources */,
 				958A1CF122B771F3003938F1 /* Storyboards.swift in Sources */,
 				958A1CD122B771F3003938F1 /* AppAssembler.swift in Sources */,
@@ -589,6 +598,7 @@
 				958A1CD422B771F3003938F1 /* AppViewModel.swift in Sources */,
 				958A1CCE22B771F3003938F1 /* UIViewController+.swift in Sources */,
 				958A1CBF22B771F3003938F1 /* APIError.swift in Sources */,
+				957E91BF22B8859E0042CC4F /* MainViewModel.swift in Sources */,
 				958A1CCD22B771F3003938F1 /* UIView+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -751,6 +761,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 96F2ZQ3PBH;
 				INFOPLIST_FILE = MovieDB/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -772,6 +783,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 96F2ZQ3PBH;
 				INFOPLIST_FILE = MovieDB/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

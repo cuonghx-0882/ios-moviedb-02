@@ -14,5 +14,4 @@ protocol Assembler: class,
 }
 
 final class DefaultAssembler: Assembler {
-    
 }

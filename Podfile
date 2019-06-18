@@ -39,10 +39,8 @@ target 'MovieDB' do
   target 'MovieDBTests' do
     inherit! :search_paths
     # Pods for testing
-    pod 'Quick', '1.3.0'
-    pod 'Nimble', '7.1.1'
-    pod 'RxTest'
     pod 'RxBlocking'
+    pod 'Mockingjay','2.0.1'
   end
 
 end

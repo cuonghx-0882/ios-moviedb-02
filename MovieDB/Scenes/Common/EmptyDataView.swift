@@ -12,12 +12,12 @@ final class EmptyDataView: UIView, NibOwnerLoadable {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.loadNibContent()
+        loadNibContent()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.loadNibContent()
+        loadNibContent()
     }
 
 }

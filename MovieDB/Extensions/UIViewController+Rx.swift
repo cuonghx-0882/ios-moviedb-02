@@ -10,22 +10,22 @@ import SVProgressHUD
 
 extension Reactive where Base: UIViewController {
     
-    public var isAnimating: Binder<Bool> {
+    var isAnimating: Binder<Bool> {
         return Binder(base) { vc, isVisible in
             let view = vc.navigationController?.view ?? vc.view
-            let animation = isVisible ? {
+            if isVisible {
                 view?.alpha = 0.5
                 view?.isUserInteractionEnabled = false
-                SVProgressHUD.show() } : {
-                    view?.alpha = 1
-                    view?.isUserInteractionEnabled = true
-                    SVProgressHUD.dismiss()
+                SVProgressHUD.show()
+            } else {
+                view?.alpha = 1
+                view?.isUserInteractionEnabled = true
+                SVProgressHUD.dismiss()
             }
-            animation()
         }
     }
     
-    public var handlerErr: Binder<Error> {
+    var error: Binder<Error> {
         return Binder(base) { viewController, error in
             viewController.showErrorAlert(errMessage: error.localizedDescription)
         }
