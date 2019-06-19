@@ -19,8 +19,7 @@ struct MainNavigator: MainNavigatorType {
     func getPopularScreen() -> PopularListViewController {
         return assembler.resolve(navigationController: navigation).then({
             $0.tabBarItem = UITabBarItem(title: "Popular",
-                                         image: UIImage(named: "popular")?.resizeImage(CGSize(width: 32,
-                                                                                              height: 32)),
+                                         image: UIImage(named: "popular"),
                                          tag: 0)
         })
     }

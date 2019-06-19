@@ -43,20 +43,20 @@ extension PopularListViewModel: ViewModelType {
                                                  loadMoreItems: usecase.loadMoreMovies)
         let (page, fetchItems, error, loading, refreshing, loadingMore) = loadMoreOutput
         
-        let movieList = page
-            .map {
-                [PopularMovieSection(model: "",
-                                     items: $0.items
-                                        .map { PopularViewModel(movie: $0) })]
-            }
+        let movieList = page.map {
+            [PopularMovieSection(model: "",
+                                 items: $0.items.map {
+                                    PopularViewModel(movie: $0)
+                                 })]
+        }
+        .asDriverOnErrorJustComplete()
+        
+        let movies = page
+            .map { $0.items }
             .asDriverOnErrorJustComplete()
         
         let selectedItem = input.selection
-            .withLatestFrom( page
-                .map { $0.items }
-                .asDriverOnErrorJustComplete()) { (indexPath, movies) in
-                    movies[indexPath.row]
-            }
+            .withLatestFrom(movies) { $1[$0.row] }
         
         let isEmptyData = checkIfDataIsEmpty(fetchItemsTrigger: fetchItems,
                                              loadTrigger: Driver.merge(loading, refreshing),
