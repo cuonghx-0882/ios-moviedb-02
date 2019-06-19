@@ -13,8 +13,7 @@ extension ViewModelType {
             .map { $0.1 }
             .withLatestFrom(items) { ($0, $1.isEmpty) }
             .map { loading, isEmpty -> Bool in
-                if loading { return false }
-                return isEmpty
+                return loading ? false : isEmpty
             }
     }
 }

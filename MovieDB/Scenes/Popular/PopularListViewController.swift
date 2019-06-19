@@ -4,6 +4,7 @@
 //
 //  Created by cuonghx on 6/18/19.
 //  Copyright © 2019 Sun*. All rights reserved.
+//
 
 import RxDataSources
 
@@ -37,10 +38,16 @@ final class PopularListViewController: UIViewController, BindableType {
     private func setupView() {
         tableView.register(cellType: MovieTableViewCell.self)
         tableView.estimatedRowHeight = 156
+        tableView.delegate = self
     }
     
     func bindViewModel() {
-        configDataSource()
+        dataSource = PopularDataSource(configureCell: { ( _, tableView, indexPath, model ) in
+            let cell: MovieTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+            cell.bindViewModel(model)
+            return cell
+        })
+        
         let input = PopularListViewModel.Input(loadTrigger: Driver.just(()),
                                                refreshTrigger: tableView.loadMoreTopTrigger,
                                                loadMoreTrigger: tableView.loadMoreBottomTrigger,
@@ -48,47 +55,38 @@ final class PopularListViewController: UIViewController, BindableType {
         let output = viewModel.transform(input)
         
         output.movieList
-              .drive(tableView.rx.items(dataSource: dataSource))
-              .disposed(by: rx.disposeBag)
+            .drive(tableView.rx.items(dataSource: dataSource))
+            .disposed(by: rx.disposeBag)
         output.loading
-              .drive()
-              .disposed(by: rx.disposeBag)
+            .drive()
+            .disposed(by: rx.disposeBag)
         output.refreshing
-              .drive(tableView.loadingMoreTop)
-              .disposed(by: rx.disposeBag)
+            .drive(tableView.loadingMoreTop)
+            .disposed(by: rx.disposeBag)
         output.loadingMore
-              .drive(tableView.loadingMoreBottom)
-              .disposed(by: rx.disposeBag)
+            .drive(tableView.loadingMoreBottom)
+            .disposed(by: rx.disposeBag)
         output.fetchItems
-              .drive()
-              .disposed(by: rx.disposeBag)
+            .drive()
+            .disposed(by: rx.disposeBag)
         output.error
-              .drive(rx.error)
-              .disposed(by: rx.disposeBag)
+            .drive(rx.error)
+            .disposed(by: rx.disposeBag)
         output.selectedItems
-              .drive()
-              .disposed(by: rx.disposeBag)
+            .drive()
+            .disposed(by: rx.disposeBag)
         output.isEmptyData
-              .drive(tableView.isEmptyData)
-              .disposed(by: rx.disposeBag)
-    }
-    
-    private func configDataSource() {
-        dataSource = PopularDataSource(configureCell: { ( _, tableView, indexPath, model ) in
-                let cell: MovieTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-                cell.bindViewModel(model)
-                return cell
-        })
-        tableView.rx.itemSelected
-                    .asDriver()
-                    .do(onNext: { [unowned self] indexPath in
-                        self.tableView.deselectRow(at: indexPath, animated: true)
-                    })
-                    .drive()
-                    .disposed(by: rx.disposeBag)
+            .drive(tableView.isEmptyData)
+            .disposed(by: rx.disposeBag)
     }
 }
 
 extension PopularListViewController: StoryboardSceneBased {
     static var sceneStoryboard = Storyboards.main
+}
+
+extension PopularListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }

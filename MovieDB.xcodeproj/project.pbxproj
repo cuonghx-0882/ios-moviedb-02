@@ -75,7 +75,6 @@
 		95A888EA22BA03EE00C44A71 /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A888E122BA03ED00C44A71 /* MovieTableViewCell.swift */; };
 		95A888ED22BA040E00C44A71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95A888EC22BA040E00C44A71 /* Assets.xcassets */; };
 		95A888EF22BA041D00C44A71 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95A888EE22BA041C00C44A71 /* Main.storyboard */; };
-		95A888F122BA046E00C44A71 /* MovieRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A888F022BA046D00C44A71 /* MovieRepository.swift */; };
 		95A888F322BA04A000C44A71 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A888F222BA04A000C44A71 /* Utils.swift */; };
 		95A888F622BA04E700C44A71 /* UITabBarController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A888F422BA04E600C44A71 /* UITabBarController+Rx.swift */; };
 		95A888F922BA052E00C44A71 /* ViewModelType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A888F822BA052D00C44A71 /* ViewModelType+.swift */; };
@@ -85,6 +84,7 @@
 		95A8890322BA060500C44A71 /* PopularListViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A8890022BA060400C44A71 /* PopularListViewModelTest.swift */; };
 		95A8890522BA073200C44A71 /* TestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A8890422BA073100C44A71 /* TestError.swift */; };
 		95A8890722BA0C7900C44A71 /* MovieTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A8890622BA0C7900C44A71 /* MovieTableViewCell.xib */; };
+		95A8891222BA370800C44A71 /* MovieRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A8891122BA370800C44A71 /* MovieRepository.swift */; };
 		F50BA128113A10DA931052E1 /* Pods_MovieDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC5F84240D70C9565BB1842A /* Pods_MovieDB.framework */; };
 /* End PBXBuildFile section */
 
@@ -173,7 +173,6 @@
 		95A888E122BA03ED00C44A71 /* MovieTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
 		95A888EC22BA040E00C44A71 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		95A888EE22BA041C00C44A71 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		95A888F022BA046D00C44A71 /* MovieRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieRepository.swift; sourceTree = "<group>"; };
 		95A888F222BA04A000C44A71 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		95A888F422BA04E600C44A71 /* UITabBarController+Rx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITabBarController+Rx.swift"; sourceTree = "<group>"; };
 		95A888F822BA052D00C44A71 /* ViewModelType+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewModelType+.swift"; sourceTree = "<group>"; };
@@ -183,6 +182,7 @@
 		95A8890022BA060400C44A71 /* PopularListViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopularListViewModelTest.swift; sourceTree = "<group>"; };
 		95A8890422BA073100C44A71 /* TestError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestError.swift; sourceTree = "<group>"; };
 		95A8890622BA0C7900C44A71 /* MovieTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MovieTableViewCell.xib; sourceTree = "<group>"; };
+		95A8891122BA370800C44A71 /* MovieRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieRepository.swift; sourceTree = "<group>"; };
 		A3032FDCB070D15EC2FC2405 /* Pods-MovieDB.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieDB.release.xcconfig"; path = "Target Support Files/Pods-MovieDB/Pods-MovieDB.release.xcconfig"; sourceTree = "<group>"; };
 		BC5F84240D70C9565BB1842A /* Pods_MovieDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E60FAF84BCB5B45ACAD3A552 /* Pods-MovieDBTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieDBTests.release.xcconfig"; path = "Target Support Files/Pods-MovieDBTests/Pods-MovieDBTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -378,8 +378,8 @@
 		958A1C5B22B771F0003938F1 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				95A8891122BA370800C44A71 /* MovieRepository.swift */,
 				958A1C5E22B771F0003938F1 /* RepositoriesAssembler.swift */,
-				95A888F022BA046D00C44A71 /* MovieRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -831,7 +831,6 @@
 				957E91C322B886680042CC4F /* MainUseCase.swift in Sources */,
 				958A1D1322B77986003938F1 /* Constants.swift in Sources */,
 				958A1D2022B78014003938F1 /* MainAssembler.swift in Sources */,
-				95A888F122BA046E00C44A71 /* MovieRepository.swift in Sources */,
 				958A1CBD22B771F3003938F1 /* RepositoriesAssembler.swift in Sources */,
 				958A1CC122B771F3003938F1 /* APIOutput.swift in Sources */,
 				958A1CB722B771F3003938F1 /* Keys.swift in Sources */,
@@ -843,6 +842,7 @@
 				957E923322B8B9E30042CC4F /* APIUrls.swift in Sources */,
 				95A888FB22BA05AE00C44A71 /* UIImage+.swift in Sources */,
 				95A888E722BA03EE00C44A71 /* PopularListViewModel.swift in Sources */,
+				95A8891222BA370800C44A71 /* MovieRepository.swift in Sources */,
 				958A1CB922B771F3003938F1 /* Assembler.swift in Sources */,
 				958A1CCF22B771F3003938F1 /* UIViewController+Rx.swift in Sources */,
 				957E923E22B8BA120042CC4F /* Video.swift in Sources */,

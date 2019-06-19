@@ -4,6 +4,7 @@
 //
 //  Created by cuonghx on 6/18/19.
 //  Copyright © 2019 Sun*. All rights reserved.
+//
 
 import Foundation
 
@@ -16,12 +17,11 @@ struct PopularListUseCase: PopularListUseCaseType {
     var movieRepo: MovieRepositoryType
     
     func loadMoreMovies(page: Int) -> Observable<PagingInfo<Movie>> {
-        return movieRepo.getMovieList(.popular,
+        return movieRepo.getMovieList(category: .popular,
                                       page: page)
     }
     
     func getMoviesList() -> Observable<PagingInfo<Movie>> {
         return loadMoreMovies(page: 1)
     }
-    
 }

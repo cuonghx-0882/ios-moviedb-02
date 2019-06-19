@@ -4,6 +4,7 @@
 //
 //  Created by cuonghx on 6/18/19.
 //  Copyright © 2019 Sun*. All rights reserved.
+//
 
 import RxDataSources
 
@@ -42,20 +43,23 @@ extension PopularListViewModel: ViewModelType {
                                                  loadMoreItems: usecase.loadMoreMovies)
         let (page, fetchItems, error, loading, refreshing, loadingMore) = loadMoreOutput
         
-        let movieList = page.map { [PopularMovieSection(model: "",
-                                                        items: $0.items
-                                                                 .map { PopularViewModel(movie: $0) })]
-        }
-        .asDriverOnErrorJustComplete()
+        let movieList = page
+            .map {
+                [PopularMovieSection(model: "",
+                                     items: $0.items
+                                        .map { PopularViewModel(movie: $0) })]
+            }
+            .asDriverOnErrorJustComplete()
         
         let selectedItem = input.selection
-                                .withLatestFrom(page.map { $0.items }
-                                                    .asDriverOnErrorJustComplete()) { (indexPath, movies) in
-                                        movies[indexPath.row]
-                                }
+            .withLatestFrom( page
+                .map { $0.items }
+                .asDriverOnErrorJustComplete()) { (indexPath, movies) in
+                    movies[indexPath.row]
+            }
+        
         let isEmptyData = checkIfDataIsEmpty(fetchItemsTrigger: fetchItems,
-                                             loadTrigger: Driver.merge(loading,
-                                                                       refreshing),
+                                             loadTrigger: Driver.merge(loading, refreshing),
                                              items: movieList)
         return Output(error: error,
                       loading: loading,
