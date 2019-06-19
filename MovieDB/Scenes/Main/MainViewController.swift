@@ -22,7 +22,11 @@ final class MainViewController: UITabBarController, BindableType {
     
     // MARK: - Methods
     func bindViewModel() {
-        
+        let input = MainViewModel.Input()
+        let output = viewModel.transform(input)
+        output.listsubviewcontroller
+            .drive(rx.viewcontrollers)
+            .disposed(by: rx.disposeBag)
     }
 }
 

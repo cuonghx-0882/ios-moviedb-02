@@ -15,11 +15,13 @@ extension MainViewModel: ViewModelType {
     struct Input {
         
     }
+    
     struct Output {
-        
+        var listsubviewcontroller: Driver<[UIViewController]>
     }
     
     func transform(_ input: Input) -> Output {
-        return Output()
+        let viewControllers: [UIViewController] = [navigator.getPopularScreen()]
+        return Output(listsubviewcontroller: Driver.just(viewControllers))
     }
 }
