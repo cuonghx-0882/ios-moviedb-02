@@ -20,7 +20,7 @@ final class APIMovieCategoryTests: XCTestCase {
     
     func test_APIMoviePopular_Success() {
         // arrange
-        var output: API.GetMovieListOutput?
+        let output: API.GetMovieListOutput?
         let data = loadStub(name: "popular", extension: "json")
         let stubURL = movieURL + "/popular" + queries
         

@@ -19,7 +19,6 @@ extension API {
     final class GetMovieListInput: APIInput {
         init(categoryType: CategoryType, page: Int) {
             let params: [String: Any] = [
-                "api_key": Keys.apiKey,
                 "page": page
             ]
             super.init(urlString: API.Urls.moviesURL + categoryType.rawValue,

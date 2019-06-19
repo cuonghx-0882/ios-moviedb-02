@@ -18,11 +18,8 @@ extension API {
 extension API {
     final class TrailerLinkInput: APIInputBase {
         init (movieID: Int) {
-            let params: [String: Any] = [
-                "api_key": Keys.apiKey
-            ]
             super.init(urlString: Urls.moviesURL + "/\(movieID)/videos",
-                       parameters: params,
+                       parameters: nil,
                        requestType: .get,
                        requireAccessToken: false)
         }

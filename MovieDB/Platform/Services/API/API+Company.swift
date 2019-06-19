@@ -17,11 +17,8 @@ extension API {
 extension API {
     final class GetCompanyListInput: APIInputBase {
         init(movieID: Int) {
-            let params: [String: Any] = [
-                "api_key": Keys.apiKey
-            ]
             super.init(urlString: API.Urls.moviesURL + "/\(movieID)",
-                       parameters: params,
+                       parameters: nil,
                        requestType: .get,
                        requireAccessToken: false)
         }

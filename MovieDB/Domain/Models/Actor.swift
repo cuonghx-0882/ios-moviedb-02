@@ -7,7 +7,6 @@
 //
 
 import ObjectMapper
-import RxDataSources
 
 struct Actor {
     var character: String

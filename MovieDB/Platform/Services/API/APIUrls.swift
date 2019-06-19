@@ -9,10 +9,9 @@
 extension API {
     enum Urls {
         private static var apiBaseURL = "https://api.themoviedb.org/3"
-        static let keywordURL = apiBaseURL + "/search/keyword"
+        static let searchMovieQuery = apiBaseURL + "/search/movie"
         static let moviesURL = apiBaseURL + "/movie"
-        static let discoverURL = apiBaseURL + "/discover"
-        static let genresURL = apiBaseURL + "/genre/movie/list"
+        static let searchMovieGenres = apiBaseURL + "/discover/movie"
         
         static let posterUrl = "https://image.tmdb.org/t/p/w185"
         static let backdropUrl = "https://image.tmdb.org/t/p/w500"
