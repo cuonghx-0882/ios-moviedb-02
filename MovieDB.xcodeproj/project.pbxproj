@@ -75,8 +75,6 @@
 		95A888EA22BA03EE00C44A71 /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A888E122BA03ED00C44A71 /* MovieTableViewCell.swift */; };
 		95A888ED22BA040E00C44A71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95A888EC22BA040E00C44A71 /* Assets.xcassets */; };
 		95A888EF22BA041D00C44A71 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95A888EE22BA041C00C44A71 /* Main.storyboard */; };
-		95A888F322BA04A000C44A71 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A888F222BA04A000C44A71 /* Utils.swift */; };
-		95A888F622BA04E700C44A71 /* UITabBarController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A888F422BA04E600C44A71 /* UITabBarController+Rx.swift */; };
 		95A888F922BA052E00C44A71 /* ViewModelType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A888F822BA052D00C44A71 /* ViewModelType+.swift */; };
 		95A888FB22BA05AE00C44A71 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A888FA22BA05AD00C44A71 /* UIImage+.swift */; };
 		95A8890122BA060500C44A71 /* PopularListNavigatorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A888FE22BA060400C44A71 /* PopularListNavigatorMock.swift */; };
@@ -173,8 +171,6 @@
 		95A888E122BA03ED00C44A71 /* MovieTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
 		95A888EC22BA040E00C44A71 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		95A888EE22BA041C00C44A71 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		95A888F222BA04A000C44A71 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		95A888F422BA04E600C44A71 /* UITabBarController+Rx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITabBarController+Rx.swift"; sourceTree = "<group>"; };
 		95A888F822BA052D00C44A71 /* ViewModelType+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewModelType+.swift"; sourceTree = "<group>"; };
 		95A888FA22BA05AD00C44A71 /* UIImage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		95A888FE22BA060400C44A71 /* PopularListNavigatorMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopularListNavigatorMock.swift; sourceTree = "<group>"; };
@@ -343,7 +339,6 @@
 		958A1C5022B771EF003938F1 /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				95A888F222BA04A000C44A71 /* Utils.swift */,
 				958A1D1222B77985003938F1 /* Constants.swift */,
 				958A1C5222B771EF003938F1 /* Keys.swift */,
 			);
@@ -421,7 +416,6 @@
 			isa = PBXGroup;
 			children = (
 				958A1C7122B771F1003938F1 /* UITableView+.swift */,
-				95A888F422BA04E600C44A71 /* UITabBarController+Rx.swift */,
 				958A1C7222B771F1003938F1 /* UIView+.swift */,
 				958A1C7322B771F1003938F1 /* UIViewController+.swift */,
 				958A1C7422B771F1003938F1 /* UIViewController+Rx.swift */,
@@ -851,7 +845,6 @@
 				957E922F22B8B9E30042CC4F /* API+Company.swift in Sources */,
 				95A888E322BA03EE00C44A71 /* PopularListAssembler.swift in Sources */,
 				958A1CD322B771F3003938F1 /* AppUseCase.swift in Sources */,
-				95A888F622BA04E700C44A71 /* UITabBarController+Rx.swift in Sources */,
 				958A1CF122B771F3003938F1 /* Storyboards.swift in Sources */,
 				958A1CD122B771F3003938F1 /* AppAssembler.swift in Sources */,
 				957E923122B8B9E30042CC4F /* API+TrailerLink.swift in Sources */,
@@ -869,7 +862,6 @@
 				958A1CCE22B771F3003938F1 /* UIViewController+.swift in Sources */,
 				958A1CBF22B771F3003938F1 /* APIError.swift in Sources */,
 				95A888E522BA03EE00C44A71 /* PopularListUseCase.swift in Sources */,
-				95A888F322BA04A000C44A71 /* Utils.swift in Sources */,
 				957E91BF22B8859E0042CC4F /* MainViewModel.swift in Sources */,
 				958A1CCD22B771F3003938F1 /* UIView+.swift in Sources */,
 				95A888E422BA03EE00C44A71 /* PopularListNavigator.swift in Sources */,

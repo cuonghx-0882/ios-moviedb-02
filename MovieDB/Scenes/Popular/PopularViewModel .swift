@@ -18,7 +18,7 @@ extension PopularViewModel: MovieModelType {
     }
     
     var genres: String {
-        return Utils.getGenreList(genres: movie.genres)
+        return convertListGenres(genres: movie.genres)
     }
     
     var overview: String {
@@ -45,5 +45,16 @@ extension PopularViewModel: IdentifiableType, Equatable {
     
     static func == (lhs: PopularViewModel, rhs: PopularViewModel) -> Bool {
         return lhs.movie.id == rhs.movie.id
+    }
+}
+
+extension PopularViewModel {
+    private func convertListGenres(genres: [Int]) -> String {
+        guard !genres.isEmpty else { return "" }
+        return genres
+            .compactMap {
+                Constants.genres[$0]
+            }
+            .joined(separator: ", ")
     }
 }

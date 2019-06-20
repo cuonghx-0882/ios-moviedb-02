@@ -17,11 +17,9 @@ extension MainViewModel: ViewModelType {
     }
     
     struct Output {
-        var tabs: Driver<[UIViewController]>
     }
     
     func transform(_ input: Input) -> Output {
-        let viewControllers: [UIViewController] = [navigator.getPopularScreen()]
-        return Output(tabs: Driver.just(viewControllers))
+        return Output()
     }
 }
