@@ -61,6 +61,7 @@
 		958A1D1322B77986003938F1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958A1D1222B77985003938F1 /* Constants.swift */; };
 		958A1D2022B78014003938F1 /* MainAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958A1D1E22B78014003938F1 /* MainAssembler.swift */; };
 		958A1D2122B78014003938F1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958A1D1F22B78014003938F1 /* MainViewController.swift */; };
+		95A822DE22BB1FFA00B5C8CF /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A822DD22BB1FFA00B5C8CF /* Array+.swift */; };
 		95A888C922B9F13700C44A71 /* API+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A888C822B9F13700C44A71 /* API+Search.swift */; };
 		95A888CB22B9F3C000C44A71 /* APISearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A888CA22B9F3C000C44A71 /* APISearchTests.swift */; };
 		95A888D122B9F57500C44A71 /* searchQuery.json in Resources */ = {isa = PBXBuildFile; fileRef = 95A888D022B9F57500C44A71 /* searchQuery.json */; };
@@ -157,6 +158,7 @@
 		958A1D1222B77985003938F1 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		958A1D1E22B78014003938F1 /* MainAssembler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainAssembler.swift; sourceTree = "<group>"; };
 		958A1D1F22B78014003938F1 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		95A822DD22BB1FFA00B5C8CF /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		95A888C822B9F13700C44A71 /* API+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "API+Search.swift"; sourceTree = "<group>"; };
 		95A888CA22B9F3C000C44A71 /* APISearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISearchTests.swift; sourceTree = "<group>"; };
 		95A888D022B9F57500C44A71 /* searchQuery.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = searchQuery.json; sourceTree = "<group>"; };
@@ -421,6 +423,7 @@
 				958A1C7422B771F1003938F1 /* UIViewController+Rx.swift */,
 				95A888F822BA052D00C44A71 /* ViewModelType+.swift */,
 				95A888FA22BA05AD00C44A71 /* UIImage+.swift */,
+				95A822DD22BB1FFA00B5C8CF /* Array+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -831,6 +834,7 @@
 				958A1CD522B771F3003938F1 /* EmptyDataView.swift in Sources */,
 				95A888E822BA03EE00C44A71 /* PopularViewModel .swift in Sources */,
 				957E923B22B8BA120042CC4F /* Company.swift in Sources */,
+				95A822DE22BB1FFA00B5C8CF /* Array+.swift in Sources */,
 				958A1CCC22B771F3003938F1 /* UITableView+.swift in Sources */,
 				95A888E622BA03EE00C44A71 /* PopularListViewController.swift in Sources */,
 				957E923322B8B9E30042CC4F /* APIUrls.swift in Sources */,

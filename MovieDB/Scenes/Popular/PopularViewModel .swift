@@ -6,8 +6,6 @@
 //  Copyright © 2019 Sun*. All rights reserved.
 //
 
-import RxDataSources
-
 struct PopularViewModel {
     let movie: Movie
 }
@@ -18,7 +16,7 @@ extension PopularViewModel: MovieModelType {
     }
     
     var genres: String {
-        return convertListGenres(genres: movie.genres)
+        return movie.genres.convertListGenres()
     }
     
     var overview: String {
@@ -35,26 +33,5 @@ extension PopularViewModel: MovieModelType {
     
     var releaseDate: String {
         return movie.releaseDate
-    }
-}
-
-extension PopularViewModel: IdentifiableType, Equatable {
-    var identity: Int {
-        return movie.id
-    }
-    
-    static func == (lhs: PopularViewModel, rhs: PopularViewModel) -> Bool {
-        return lhs.movie.id == rhs.movie.id
-    }
-}
-
-extension PopularViewModel {
-    private func convertListGenres(genres: [Int]) -> String {
-        guard !genres.isEmpty else { return "" }
-        return genres
-            .compactMap {
-                Constants.genres[$0]
-            }
-            .joined(separator: ", ")
     }
 }

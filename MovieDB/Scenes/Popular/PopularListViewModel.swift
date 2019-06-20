@@ -8,7 +8,7 @@
 
 import RxDataSources
 
-typealias PopularMovieSection = AnimatableSectionModel<String, PopularViewModel>
+typealias PopularMovieSection = SectionModel<String, PopularViewModel>
 
 struct PopularListViewModel {
     var navigator: PopularListNavigatorType

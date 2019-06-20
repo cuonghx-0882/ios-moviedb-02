@@ -14,7 +14,7 @@ final class PopularListViewController: UIViewController, BindableType {
     @IBOutlet private weak var tableView: RefreshTableView!
     
     // MARK: - Propeties
-    typealias PopularDataSource = RxTableViewSectionedAnimatedDataSource<PopularMovieSection>
+    typealias PopularDataSource = RxTableViewSectionedReloadDataSource<PopularMovieSection>
     
     var viewModel: PopularListViewModel!
     private var dataSource: PopularDataSource!
