@@ -14,7 +14,7 @@ typealias CompanySection = SectionModel<String, CompanyViewModel>
 struct DetailViewModel {
     var usecase: DetailUseCaseType
     var navigator: DetailNavigatorType
-    var movieModel: MovieModelType
+    var movie: Movie
 }
 
 extension DetailViewModel: ViewModelType {
@@ -23,7 +23,7 @@ extension DetailViewModel: ViewModelType {
     }
     
     struct Output {
-        var movieModel: Driver<MovieModelType>
+        var movie: Driver<Movie>
         var trailerLink: Driver<String>
         var actorList: Driver<[ActorSection]>
         var companyList: Driver<[CompanySection]>
@@ -38,7 +38,7 @@ extension DetailViewModel: ViewModelType {
         let trailerLink = input.loadTrigger
             .flatMapLatest {
                 self.usecase
-                    .getTrailerLink(movieID: self.movieModel.id)
+                    .getTrailerLink(movieID: self.movie.id)
                     .trackError(errorTracker)
                     .trackActivity(indicatorTrailerLink)
                     .asDriverOnErrorJustComplete()
@@ -47,7 +47,7 @@ extension DetailViewModel: ViewModelType {
         let companyList = input.loadTrigger
             .flatMapLatest {
                 self.usecase
-                    .getProductionCompanyList(movieID: self.movieModel.id)
+                    .getProductionCompanyList(movieID: self.movie.id)
                     .trackError(errorTracker)
                     .map {
                         [CompanySection(model: "",
@@ -61,7 +61,7 @@ extension DetailViewModel: ViewModelType {
         let actorList = input.loadTrigger
             .flatMapLatest {
                 self.usecase
-                    .getActorList(movieID: self.movieModel.id)
+                    .getActorList(movieID: self.movie.id)
                     .trackError(errorTracker)
                     .map {
                         [ActorSection(model: "",
@@ -72,7 +72,7 @@ extension DetailViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
         
-        return Output(movieModel: Driver.just(movieModel),
+        return Output(movie: Driver.just(movie),
                       trailerLink: trailerLink,
                       actorList: actorList,
                       companyList: companyList,

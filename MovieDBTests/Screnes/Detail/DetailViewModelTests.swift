@@ -34,7 +34,7 @@ final class DetailViewModelTests: XCTestCase {
         }
         viewModel = DetailViewModel(usecase: usecase,
                                     navigator: navigator,
-                                    movieModel: PopularViewModel(movie: movie))
+                                    movie: movie)
         input = DetailViewModel.Input(loadTrigger: loadTrigger.asDriverOnErrorJustComplete())
         output = viewModel.transform(input)
         output.actorList
@@ -49,7 +49,7 @@ final class DetailViewModelTests: XCTestCase {
         output.trailerLink
             .drive()
             .disposed(by: rx.disposeBag)
-        output.movieModel
+        output.movie
             .drive()
             .disposed(by: rx.disposeBag)
         output.loadingTrailer

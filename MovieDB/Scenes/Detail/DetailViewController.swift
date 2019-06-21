@@ -91,7 +91,7 @@ final class DetailViewController: UIViewController, BindableType {
         
         let output = viewModel.transform(input)
         
-        output.movieModel
+        output.movie
             .drive(movieModel)
             .disposed(by: rx.disposeBag)
         output.trailerLink
@@ -117,13 +117,13 @@ extension DetailViewController: StoryboardSceneBased {
 }
 
 extension DetailViewController {
-    var movieModel: Binder<MovieModelType> {
-        return Binder(self) { vc, model in
-            vc.nameLabel.text = model.title
-            vc.overViewLabel.text = model.overview
-            vc.releaseDateLabel.text = model.releaseDate
-            vc.title = model.title
-            vc.starRateView.rating = model.voteAverage
+    var movieModel: Binder<Movie> {
+        return Binder(self) { vc, movie in
+            vc.nameLabel.text = movie.title
+            vc.overViewLabel.text = movie.overview
+            vc.releaseDateLabel.text = movie.releaseDate
+            vc.title = movie.title
+            vc.starRateView.rating = movie.voteAverage
         }
     }
 }

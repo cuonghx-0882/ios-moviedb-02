@@ -9,24 +9,24 @@
 import Foundation
 
 protocol DetailAssembler {
-    func resolve(navigation: UINavigationController, movieModel: MovieModelType) -> DetailViewController
-    func resolve(navigation: UINavigationController, movieModel: MovieModelType) -> DetailViewModel
+    func resolve(navigation: UINavigationController, movie: Movie) -> DetailViewController
+    func resolve(navigation: UINavigationController, movie: Movie) -> DetailViewModel
     func resolve(navigation: UINavigationController) -> DetailNavigatorType
     func resolve() -> DetailUseCaseType
 }
 
 extension DetailAssembler {
-    func resolve(navigation: UINavigationController, movieModel: MovieModelType) -> DetailViewController {
+    func resolve(navigation: UINavigationController, movie: Movie) -> DetailViewController {
         let vc = DetailViewController.instantiate()
-        let vm: DetailViewModel = resolve(navigation: navigation, movieModel: movieModel)
+        let vm: DetailViewModel = resolve(navigation: navigation, movie: movie)
         vc.bindViewModel(to: vm)
         return vc
     }
     
-    func resolve(navigation: UINavigationController, movieModel: MovieModelType) -> DetailViewModel {
+    func resolve(navigation: UINavigationController, movie: Movie) -> DetailViewModel {
         return DetailViewModel(usecase: resolve(),
                                navigator: resolve(navigation: navigation),
-                               movieModel: movieModel)
+                               movie: movie)
     }
 }
 

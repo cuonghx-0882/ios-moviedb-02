@@ -14,7 +14,7 @@ final class UpcomingListNavigatorMock: UpcomingListNavigatorType {
     
     var expectationToDetailCalled: XCTestExpectation!
     
-    func toDetailVC(movieModel: MovieModelType) {
+    func toDetailVC(movie: Movie) {
         expectationToDetailCalled.fulfill()
     }
 }
