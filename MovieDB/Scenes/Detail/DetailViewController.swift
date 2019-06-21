@@ -30,11 +30,18 @@ final class DetailViewController: UIViewController, BindableType {
     private var companyDataSource: CompanyDataSource!
     private var player: YTSwiftyPlayer!
     var viewModel: DetailViewModel!
+    private var favoriteBarButton: UIBarButtonItem = {
+        return UIBarButtonItem(image: UIImage(named: "unfavorite"),
+                               style: .plain,
+                               target: nil,
+                               action: nil)
+    }()
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configView()
+        configYTSwiftyPlayer()
+        configCollectionView()
     }
     
     deinit {
@@ -43,18 +50,17 @@ final class DetailViewController: UIViewController, BindableType {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        navigationController?.navigationBar.topItem?
-            .rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "unfavorite"),
-                                                  style: .plain,
-                                                  target: nil,
-                                                  action: nil)
+        navigationController?.navigationBar.topItem?.rightBarButtonItem = favoriteBarButton
     }
     
     // MARK: - Methods
-    private func configView() {
+    private func configYTSwiftyPlayer() {
         player = YTSwiftyPlayer(frame: ytBaseView.frame,
                                 playerVars: [])
         ytBaseView.addSubview(player)
+    }
+    
+    private func configCollectionView() {
         actorCollectionView.register(cellType: ActorCollectionViewCell.self)
         companyCollectionView.register(cellType: CompanyCollectionViewCell.self)
         guard let flowLayoutActor =
@@ -71,7 +77,7 @@ final class DetailViewController: UIViewController, BindableType {
         actorDataSource =
             ActorDataSource(configureCell: { ( _, collectionView, indexPath, model ) in
                 let item: ActorCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
-                item.bindViewModel(actor: model)
+                item.bindViewModel(model)
                 return item
             })
         companyDataSource =
@@ -81,31 +87,12 @@ final class DetailViewController: UIViewController, BindableType {
                 return item
             })
         
-        let input = DetailViewModel.Input(triggerLoadActor: Driver.just(()),
-                                          triggerLoadCompany: Driver.just(()),
-                                          triggerLoadTrailerLink: Driver.just(()))
+        let input = DetailViewModel.Input(loadTrigger: Driver.just(()))
         
         let output = viewModel.transform(input)
         
-        output.movie
-            .map { $0.title }
-            .drive(nameLabel.rx.text)
-            .disposed(by: rx.disposeBag)
-        output.movie
-            .map { $0.overview }
-            .drive(overViewLabel.rx.text)
-            .disposed(by: rx.disposeBag)
-        output.movie
-            .map { $0.releaseDate }
-            .drive(releaseDateLabel.rx.text)
-            .disposed(by: rx.disposeBag)
-        output.movie
-            .map { $0.title }
-            .drive(rx.title)
-            .disposed(by: rx.disposeBag)
-        output.movie
-            .map { $0.voteAverage / 2 }
-            .drive(starRateView.rx.rating)
+        output.movieModel
+            .drive(movieModel)
             .disposed(by: rx.disposeBag)
         output.trailerLink
             .drive(player.rx.settingVideo)
@@ -127,4 +114,16 @@ final class DetailViewController: UIViewController, BindableType {
 
 extension DetailViewController: StoryboardSceneBased {
     static var sceneStoryboard = Storyboards.detail
+}
+
+extension DetailViewController {
+    var movieModel: Binder<MovieModelType> {
+        return Binder(self) { vc, model in
+            vc.nameLabel.text = model.title
+            vc.overViewLabel.text = model.overview
+            vc.releaseDateLabel.text = model.releaseDate
+            vc.title = model.title
+            vc.starRateView.rating = model.voteAverage
+        }
+    }
 }

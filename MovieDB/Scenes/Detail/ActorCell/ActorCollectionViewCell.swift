@@ -16,12 +16,10 @@ final class ActorCollectionViewCell: UICollectionViewCell, NibReusable {
     @IBOutlet private weak var characterLabel: UILabel!
     
     // MARK: - Methods
-    func bindViewModel(actor: Actor) {
-        avatarImageView.image = UIImage(named: "avatar")
-        if !actor.profilePath.isEmpty {
-            avatarImageView.kf.setImage(with: URL(string: API.Urls.profileUrl + actor.profilePath))
-        }
-        nameLabel.text = actor.name
-        characterLabel.text = actor.character
+    func bindViewModel(_ model: ActorViewModel) {
+        avatarImageView.kf.setImage(with: URL(string: API.Urls.profileUrl + model.profilePath),
+                                    placeholder: UIImage(named: "avatar"))
+        nameLabel.text = model.name
+        characterLabel.text = model.character
     }
 }

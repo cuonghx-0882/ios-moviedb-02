@@ -23,9 +23,7 @@ final class DetailViewModelTests: XCTestCase {
     
     private let disposeBage = DisposeBag()
     
-    private let triggerLoadActor = PublishSubject<Void>()
-    private let triggerLoadCompany = PublishSubject<Void>()
-    private let triggerLoadTrailerLink = PublishSubject<Void>()
+    private let loadTrigger = PublishSubject<Void>()
     
     override func setUp() {
         super.setUp()
@@ -36,13 +34,8 @@ final class DetailViewModelTests: XCTestCase {
         }
         viewModel = DetailViewModel(usecase: usecase,
                                     navigator: navigator,
-                                    movie: movie)
-        input = DetailViewModel.Input(triggerLoadActor: triggerLoadActor
-                                        .asDriverOnErrorJustComplete(),
-                                      triggerLoadCompany: triggerLoadCompany
-                                        .asDriverOnErrorJustComplete(),
-                                      triggerLoadTrailerLink: triggerLoadTrailerLink
-                                        .asDriverOnErrorJustComplete())
+                                    movieModel: PopularViewModel(movie: movie))
+        input = DetailViewModel.Input(loadTrigger: loadTrigger.asDriverOnErrorJustComplete())
         output = viewModel.transform(input)
         output.actorList
             .drive()
@@ -56,7 +49,7 @@ final class DetailViewModelTests: XCTestCase {
         output.trailerLink
             .drive()
             .disposed(by: rx.disposeBag)
-        output.movie
+        output.movieModel
             .drive()
             .disposed(by: rx.disposeBag)
         output.loadingTrailer
@@ -67,7 +60,7 @@ final class DetailViewModelTests: XCTestCase {
     func test_getActorListCalled() {
         
         //act
-        triggerLoadActor.onNext(())
+        loadTrigger.onNext(())
         let actors = try! output.actorList.toBlocking().first()
         
         // assert
@@ -79,7 +72,7 @@ final class DetailViewModelTests: XCTestCase {
     func test_getCompanyListCalled() {
         
         // act
-        triggerLoadCompany.onNext(())
+        loadTrigger.onNext(())
         let companies = try! output.companyList.toBlocking().first()
         
         // assert
@@ -91,7 +84,7 @@ final class DetailViewModelTests: XCTestCase {
     func test_getTrailerLinkCalled() {
         
         //act
-        triggerLoadTrailerLink.onNext(())
+        loadTrigger.onNext(())
         let link = try! output.trailerLink.toBlocking().first()
         
         // assert
@@ -105,7 +98,7 @@ final class DetailViewModelTests: XCTestCase {
         usecase.listActorReturn = actorsReturn
 
         // act
-        triggerLoadActor.onNext(())
+        loadTrigger.onNext(())
         actorsReturn.onError(TestError())
         let error = try! output.error.toBlocking().first()
         
@@ -118,7 +111,7 @@ final class DetailViewModelTests: XCTestCase {
         usecase.listProductionCompanyReturn = companiessReturn
         
         // act
-        triggerLoadCompany.onNext(())
+        loadTrigger.onNext(())
         companiessReturn.onError(TestError())
         let error = try! output.error.toBlocking().first()
         
@@ -131,7 +124,7 @@ final class DetailViewModelTests: XCTestCase {
         usecase.trailerLinkReturn = trailerLinkReturn
         
         // act
-        triggerLoadTrailerLink.onNext(())
+        loadTrigger.onNext(())
         trailerLinkReturn.onError(TestError())
         let error = try! output.error.toBlocking().first()
         

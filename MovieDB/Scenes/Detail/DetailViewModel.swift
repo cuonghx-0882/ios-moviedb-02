@@ -8,24 +8,22 @@
 
 import RxDataSources
 
-typealias ActorSection = SectionModel<String, Actor>
-typealias CompanySection = SectionModel<String, Company>
+typealias ActorSection = SectionModel<String, ActorViewModel>
+typealias CompanySection = SectionModel<String, CompanyViewModel>
 
 struct DetailViewModel {
     var usecase: DetailUseCaseType
     var navigator: DetailNavigatorType
-    var movie: Movie
+    var movieModel: MovieModelType
 }
 
 extension DetailViewModel: ViewModelType {
     struct Input {
-        var triggerLoadActor: Driver<Void>
-        var triggerLoadCompany: Driver<Void>
-        var triggerLoadTrailerLink: Driver<Void>
+        var loadTrigger: Driver<Void>
     }
     
     struct Output {
-        var movie: Driver<Movie>
+        var movieModel: Driver<MovieModelType>
         var trailerLink: Driver<String>
         var actorList: Driver<[ActorSection]>
         var companyList: Driver<[CompanySection]>
@@ -37,40 +35,44 @@ extension DetailViewModel: ViewModelType {
         let errorTracker = ErrorTracker()
         let indicatorTrailerLink = ActivityIndicator()
         
-        let trailerLink = input.triggerLoadTrailerLink
+        let trailerLink = input.loadTrigger
             .flatMapLatest {
                 self.usecase
-                    .getTrailerLink(movieID: self.movie.id)
+                    .getTrailerLink(movieID: self.movieModel.id)
                     .trackError(errorTracker)
                     .trackActivity(indicatorTrailerLink)
                     .asDriverOnErrorJustComplete()
             }
         
-        let companyList = input.triggerLoadCompany
+        let companyList = input.loadTrigger
             .flatMapLatest {
                 self.usecase
-                    .getProductionCompanyList(movieID: self.movie.id)
+                    .getProductionCompanyList(movieID: self.movieModel.id)
                     .trackError(errorTracker)
                     .map {
                         [CompanySection(model: "",
-                                        items: $0)]
+                                        items: $0.map {
+                                            CompanyViewModel(company: $0)
+                                        })]
                     }
                     .asDriverOnErrorJustComplete()
             }
         
-        let actorList = input.triggerLoadActor
+        let actorList = input.loadTrigger
             .flatMapLatest {
                 self.usecase
-                    .getActorList(movieID: self.movie.id)
+                    .getActorList(movieID: self.movieModel.id)
                     .trackError(errorTracker)
                     .map {
                         [ActorSection(model: "",
-                                      items: $0)]
+                                      items: $0.map {
+                                          ActorViewModel(actor: $0)
+                                      })]
                     }
                     .asDriverOnErrorJustComplete()
             }
         
-        return Output(movie: Driver.just(movie),
+        return Output(movieModel: Driver.just(movieModel),
                       trailerLink: trailerLink,
                       actorList: actorList,
                       companyList: companyList,

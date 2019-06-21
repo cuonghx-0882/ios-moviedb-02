@@ -30,7 +30,7 @@ extension PopularListViewModel: ViewModelType {
         var loadingMore: Driver<Bool>
         var movieList: Driver<[PopularMovieSection]>
         var fetchItems: Driver<Void>
-        var selectedItems: Driver<Movie>
+        var selectedItems: Driver<PopularViewModel>
         var isEmptyData: Driver<Bool>
     }
     
@@ -51,14 +51,10 @@ extension PopularListViewModel: ViewModelType {
         }
         .asDriverOnErrorJustComplete()
         
-        let movies = page
-            .map { $0.items }
-            .asDriverOnErrorJustComplete()
-        
         let selectedItem = input.selection
-            .withLatestFrom(movies) { $1[$0.row] }
+            .withLatestFrom(movieList) { $1[$0.section].items[$0.row] }
             .do(onNext: {
-                self.navigator.toDetailVC(movie: $0)
+                self.navigator.toDetailVC(movieModel: $0)
             })
         
         let isEmptyData = checkIfDataIsEmpty(fetchItemsTrigger: fetchItems,

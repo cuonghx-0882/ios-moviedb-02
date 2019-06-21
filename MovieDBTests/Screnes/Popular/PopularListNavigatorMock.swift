@@ -14,7 +14,7 @@ final class PopularListNavigatorMock: PopularListNavigatorType {
     
     var expectationToDetailCalled: XCTestExpectation!
     
-    func toDetailVC(movie: Movie) {
+    func toDetailVC(movieModel: MovieModelType) {
         expectationToDetailCalled.fulfill()
     }
 }

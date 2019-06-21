@@ -15,11 +15,9 @@ final class CompanyCollectionViewCell: UICollectionViewCell, NibReusable {
     @IBOutlet private weak var nameLabel: UILabel!
     
     // MARK: Methods
-    func bindViewModel(_ model: Company) {
-        companyImageView.image = UIImage(named: "movie")
-        if !model.logoPath.isEmpty {
-            companyImageView.kf.setImage(with: URL(string: API.Urls.profileUrl + model.logoPath))
-        }
+    func bindViewModel(_ model: CompanyViewModel) {
+        companyImageView.kf.setImage(with: URL(string: API.Urls.profileUrl + model.logoPath),
+                                     placeholder: UIImage(named: "movie"))
         nameLabel.text = model.name
     }
 }

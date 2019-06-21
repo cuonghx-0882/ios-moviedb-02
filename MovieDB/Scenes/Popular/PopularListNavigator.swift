@@ -6,16 +6,16 @@
 //  Copyright © 2019 Sun*. All rights reserved.
 
 protocol PopularListNavigatorType {
-    func toDetailVC(movie: Movie)
+    func toDetailVC(movieModel: MovieModelType)
 }
 
 struct PopularListNavigator: PopularListNavigatorType {
     var assembler: Assembler
     var navigation: UINavigationController
     
-    func toDetailVC(movie: Movie) {
+    func toDetailVC(movieModel: MovieModelType) {
         let detailVC: DetailViewController = assembler.resolve(navigation: navigation,
-                                                               movie: movie)
+                                                               movieModel: movieModel)
         navigation.pushViewController(detailVC, animated: true)
     }
 }
