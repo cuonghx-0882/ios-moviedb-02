@@ -25,7 +25,7 @@ final class SearchViewModelTests: XCTestCase {
     private let loadTrigger = PublishSubject<Void>()
     private let loadMoreTrigger = PublishSubject<Void>()
     private let refreshTrigger = PublishSubject<Void>()
-    private let selectionGenre = PublishSubject<IndexPath>()
+    private let selectionGenre = PublishSubject<[IndexPath]>()
     private let selectionMovie = PublishSubject<IndexPath>()
     private let textSearch = PublishSubject<String>()
     
@@ -42,12 +42,7 @@ final class SearchViewModelTests: XCTestCase {
                                       textSearch: textSearch.asDriverOnErrorJustComplete(),
                                       selectionMovie: selectionMovie.asDriverOnErrorJustComplete())
         output = viewModel.transform(input)
-        output.clearSelectedGenre
-            .drive()
-            .disposed(by: disposeBag)
-        output.clearTextInSearchBar
-            .drive()
-            .disposed(by: disposeBag)
+        
         output.error
             .drive()
             .disposed(by: disposeBag)
@@ -55,9 +50,6 @@ final class SearchViewModelTests: XCTestCase {
             .drive()
             .disposed(by: disposeBag)
         output.genresList
-            .drive()
-            .disposed(by: disposeBag)
-        output.gotoTop
             .drive()
             .disposed(by: disposeBag)
         output.loading
@@ -79,36 +71,36 @@ final class SearchViewModelTests: XCTestCase {
     
     func test_loadTrigger_getMoviesList() {
         
-        let expect = self.expectation(description: "expect getMovieByGenres() to be called")
-        usecase.getMovieByGenreCalled = expect
+        let expect = self.expectation(description: "expect searchMovie() to be called")
+        usecase.getMovieListCalled = expect
         // act
         textSearch.onNext("")
-        selectionGenre.onNext(IndexPath(row: 0, section: 0))
+        selectionGenre.onNext([])
         loadTrigger.onNext(())
         
         // expect
         waitForExpectations(timeout: 1, handler: nil)
     }
     
-    func test_textChange_getMoviesList_byKeyword() {
-        let expect = self.expectation(description: "expect getMoviesByKeyword() to be called")
-        usecase.getMovieListByKeywordCalled = expect
+    func test_textChange_getMoviesList() {
+        let expect = self.expectation(description: "expect searchMovie() to be called")
+        usecase.getMovieListCalled = expect
         // act
         textSearch.onNext("")
-        selectionGenre.onNext(IndexPath(row: 0, section: 0))
+        selectionGenre.onNext([])
         textSearch.onNext("abcd")
         
         // expect
         waitForExpectations(timeout: 1, handler: nil)
     }
     
-    func test_selectGenres_getMoviesList_byGenre() {
-        let expect = self.expectation(description: "expect getMoviesByGenres() to be called")
-        usecase.getMovieByGenreCalled = expect
+    func test_selectGenres_searchMovie() {
+        let expect = self.expectation(description: "expect searchMovie() to be called")
+        usecase.getMovieListCalled = expect
         // act
-        selectionGenre.onNext(IndexPath(row: 0, section: 0))
+        selectionGenre.onNext([])
         textSearch.onNext("")
-        selectionGenre.onNext(IndexPath(row: 1, section: 0))
+        selectionGenre.onNext([IndexPath(row: 1, section: 0)])
         
         // expect
         waitForExpectations(timeout: 1, handler: nil)
@@ -116,28 +108,13 @@ final class SearchViewModelTests: XCTestCase {
     
     func test_loadTrigger_getMoviesList_failedShowError() {
        
-        let moviesListReturn = PublishSubject<PagingInfo<SearchResultModel>>()
+        let moviesListReturn = PublishSubject<PagingInfo<Movie>>()
         usecase.movieListReturn = moviesListReturn.asObserver()
         
         // act
         textSearch.onNext("")
-        selectionGenre.onNext(IndexPath(row: 0, section: 0))
+        selectionGenre.onNext([])
         loadTrigger.onNext(())
-        moviesListReturn.onError(TestError())
-        let error = try! output.error.toBlocking().first()
-        
-        // expect
-        XCTAssert(error is TestError)
-    }
-    
-    func test_editText_searchByKeyword_faildedShowError() {
-        let moviesListReturn = PublishSubject<PagingInfo<SearchResultModel>>()
-        usecase.movieListReturn = moviesListReturn.asObserver()
-        
-        // act
-        selectionGenre.onNext(IndexPath(row: 0, section: 0))
-        textSearch.onNext("Foo")
-        
         moviesListReturn.onError(TestError())
         let error = try! output.error.toBlocking().first()
         

@@ -9,34 +9,18 @@
 import Foundation
 
 protocol SearchUseCaseType {
-    func getMovieBy(keyword: String) -> Observable<PagingInfo<SearchResultModel>>
-    func loadMoreMovieByKeyword(keyword: String, page: Int) -> Observable<PagingInfo<SearchResultModel>>
-    func getMovieBy(genre: Int) -> Observable<PagingInfo<SearchResultModel>>
-    func loadMoreMovieBy(genre: Int, page: Int) -> Observable<PagingInfo<SearchResultModel>>
     func getListGenres() -> Observable<[GenreModel]>
-    func getGenresID(index: Int) -> Int
+    func getGenresID(indexList: [IndexPath]) -> [Int]
+    func searchMovie(keyword: String, genres: [Int]) -> Observable<PagingInfo<Movie>>
+    func loadMoreMovie(keyword: String, genres: [Int], page: Int)
+        -> Observable<PagingInfo<Movie>>
 }
 
 struct SearchUseCase: SearchUseCaseType {
     
     var searchRepo: SearchRepositoryType
-    
-    func getMovieBy(keyword: String) -> Observable<PagingInfo<SearchResultModel>> {
-        return loadMoreMovieByKeyword(keyword: keyword, page: 1)
-    }
-    
-    func loadMoreMovieByKeyword(keyword: String, page: Int) -> Observable<PagingInfo<SearchResultModel>> {
-        return  searchRepo.searchMoviesBy(keyword: keyword, page: page)
-    }
-    
-    func getMovieBy(genre: Int) -> Observable<PagingInfo<SearchResultModel>> {
-        return loadMoreMovieBy(genre: genre, page: 1)
-    }
-    
-    func loadMoreMovieBy(genre: Int, page: Int) -> Observable<PagingInfo<SearchResultModel>> {
-        return searchRepo.searchMoviesBy(genre: genre, page: page)
-    }
-    
+    var movieRepo: MovieRepositoryType
+
     func getListGenres() -> Observable<[GenreModel]> {
         let genreList = Constants.genres
             .map {
@@ -45,7 +29,32 @@ struct SearchUseCase: SearchUseCaseType {
         return Observable.just(genreList)
     }
     
-    func getGenresID(index: Int) -> Int {
-        return Array(Constants.genres.keys)[index]
+    func getGenresID(indexList: [IndexPath]) -> [Int] {
+        return indexList.map {
+            Array(Constants.genres.keys)[$0.row]
+        }
+    }
+    
+    func searchMovie(keyword: String, genres: [Int]) -> Observable<PagingInfo<Movie>> {
+        return loadMoreMovie(keyword: keyword, genres: genres, page: 1)
+    }
+    
+    func loadMoreMovie(keyword: String, genres: [Int], page: Int)
+        -> Observable<PagingInfo<Movie>> {
+            if keyword.isEmpty {
+                return movieRepo.getMovieList(category: .popular, page: page).map { pageInfo in
+                    PagingInfo<Movie>(page: page,
+                                      items: pageInfo.items
+                                        .filter { movie -> Bool in
+                                            if genres.isEmpty {
+                                                return true
+                                            }
+                                            return !Set(movie.genres).isDisjoint(with: genres)
+                                        })
+                }
+            }
+            return searchRepo.searchMovie(keyword: keyword,
+                                          genres: genres,
+                                          page: page)
     }
 }

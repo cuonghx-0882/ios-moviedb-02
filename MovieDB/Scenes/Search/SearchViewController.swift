@@ -16,7 +16,7 @@ final class SearchViewController: UIViewController, BindableType {
     @IBOutlet private weak var genresCollectionView: UICollectionView!
     
     // MARK: - Properties
-    typealias SearchResultsDataSource = RxTableViewSectionedAnimatedDataSource<ResultSearchSection>
+    typealias SearchResultsDataSource = RxTableViewSectionedReloadDataSource<ResultSearchSection>
     
     var viewModel: SearchViewModel!
     private var searchResultsDataSource: SearchResultsDataSource!
@@ -38,16 +38,20 @@ final class SearchViewController: UIViewController, BindableType {
     
     // MARK: - Methods
     func bindViewModel() {
-        
         searchResultsDataSource = SearchResultsDataSource(configureCell: { _, tb, indexPath, item in
             let cell: MovieTableViewCell = tb.dequeueReusableCell(for: indexPath)
             cell.bindViewModel(item)
             return cell
         })
         
-        let selectionGenres = genresCollectionView.rx.itemSelected
-            .asDriver()
-            .startWith(IndexPath(row: 0, section: 0))
+        let selectionGenres =
+            Driver.merge(genresCollectionView.rx.itemSelected.asDriver(),
+                         genresCollectionView.rx.itemDeselected.asDriver())
+                .map { [unowned self] _  in
+                    self.genresCollectionView.indexPathsForSelectedItems ?? []
+                }
+                .startWith([])
+        
         let input = SearchViewModel.Input(loadTrigger: Driver.just(()),
                                           loadMoreTrigger: resultTableView.loadMoreBottomTrigger,
                                           refreshTrigger: resultTableView.loadMoreTopTrigger,
@@ -75,12 +79,7 @@ final class SearchViewController: UIViewController, BindableType {
         output.movieResult
             .drive(resultTableView.rx.items(dataSource: searchResultsDataSource))
             .disposed(by: rx.disposeBag)
-        output.clearTextInSearchBar
-            .drive(searchBar.rx.clearText)
-            .disposed(by: rx.disposeBag)
-        output.clearSelectedGenre
-            .drive(genresCollectionView.rx.deSelectCell)
-            .disposed(by: rx.disposeBag)
+        
         output.genresList
             .drive(genresCollectionView.rx.items) { collectionView, row, element in
                 let indexPath = IndexPath(row: row, section: 0)
@@ -89,15 +88,16 @@ final class SearchViewController: UIViewController, BindableType {
                 return cell
             }
             .disposed(by: rx.disposeBag)
-        output.gotoTop
-            .map { CGPoint(x: 0, y: 0) }
-            .drive(resultTableView.rx.contentOffset)
-            .disposed(by: rx.disposeBag)
+
         output.selectedMovie
             .drive()
             .disposed(by: rx.disposeBag)
         output.isEmptyData
             .drive(resultTableView.isEmptyData)
+            .disposed(by: rx.disposeBag)
+        output.gotoTop
+            .map { CGPoint(x: 0, y: 0) }
+            .drive(resultTableView.rx.contentOffset)
             .disposed(by: rx.disposeBag)
     }
     
@@ -113,7 +113,10 @@ final class SearchViewController: UIViewController, BindableType {
             $0.estimatedRowHeight = 155
             $0.delegate = self
         }
-        genresCollectionView.register(cellType: GenreCollectionViewCell.self)
+        genresCollectionView.do {
+            $0.register(cellType: GenreCollectionViewCell.self)
+            $0.allowsMultipleSelection = true
+        }
         if let flowLayout = genresCollectionView.collectionViewLayout
             as? UICollectionViewFlowLayout {
             flowLayout.estimatedItemSize = CGSize(width: 150, height: 30)

@@ -1,21 +1,18 @@
 //
 //  SearchRepository.swift
-//  Project2
+//  MovieDB
 //
 //  Created by cuonghx on 6/17/19.
 //  Copyright © 2019 Sun*. All rights reserved.
 //
 
-import Foundation
-
 protocol SearchRepositoryType {
-    func searchMoviesBy(keyword: String, page: Int) -> Observable<PagingInfo<SearchResultModel>>
-    func searchMoviesBy(genre: Int, page: Int) -> Observable<PagingInfo<SearchResultModel>>
+    func searchMovie(keyword: String, genres: [Int], page: Int) -> Observable<PagingInfo<Movie>>
 }
 
 struct SearchRepository: SearchRepositoryType {
     
-    func searchMoviesBy(keyword: String, page: Int) -> Observable<PagingInfo<SearchResultModel>> {
+    func searchMovie(keyword: String, genres: [Int], page: Int) -> Observable<PagingInfo<Movie>> {
         let input = API.GetMovieByKeywordInput(query: keyword, page: page)
         return API.shared
             .getMovieByKeyword(input: input)
@@ -23,25 +20,14 @@ struct SearchRepository: SearchRepositoryType {
                 guard let movies = output.movies else {
                     throw APIInvalidResponseError()
                 }
-                return PagingInfo<SearchResultModel>(page: page,
-                                                     items: movies.map {
-                                                        SearchResultModel(movie: $0)
-                                                     })
-            }
-    }
-    
-    func searchMoviesBy(genre: Int, page: Int) -> Observable<PagingInfo<SearchResultModel>> {
-        let input = API.GetMovieByGenresInput(genre: genre, page: page)
-        return API.shared
-            .getMovieByGenres(input: input)
-            .map { output in
-                guard let movies = output.movies else {
-                    throw APIInvalidResponseError()
-                }
-                return PagingInfo<SearchResultModel>(page: page,
-                                                     items: movies.map {
-                                                        SearchResultModel(movie: $0)
-                                                     })
+                return PagingInfo<Movie>(page: page,
+                                         items: movies
+                                            .filter { movie in
+                                                if genres.isEmpty {
+                                                    return true
+                                                }
+                                                return !Set(movie.genres).isDisjoint(with: genres)
+                                            })
             }
     }
 }

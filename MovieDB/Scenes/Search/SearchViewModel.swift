@@ -8,7 +8,7 @@
 
 import RxDataSources
 
-typealias ResultSearchSection = AnimatableSectionModel<String, SearchResultModel>
+typealias ResultSearchSection = SectionModel<String, SearchResultModel>
 
 struct SearchViewModel {
     var usecase: SearchUseCaseType
@@ -21,7 +21,7 @@ extension SearchViewModel: ViewModelType {
         var loadTrigger: Driver<Void>
         var loadMoreTrigger: Driver<Void>
         var refreshTrigger: Driver<Void>
-        var selectionGenre: Driver<IndexPath>
+        var selectionGenre: Driver<[IndexPath]>
         var textSearch: Driver<String>
         var selectionMovie: Driver<IndexPath>
     }
@@ -33,12 +33,10 @@ extension SearchViewModel: ViewModelType {
         var refreshing: Driver<Bool>
         var loadingMore: Driver<Bool>
         var movieResult: Driver<[ResultSearchSection]>
-        var clearSelectedGenre: Driver<Void>
-        var clearTextInSearchBar: Driver<Void>
-        var genresList: Driver<[GenreModel]>
-        var gotoTop: Driver<Void>
         var selectedMovie: Driver<Movie>
         var isEmptyData: Driver<Bool>
+        var genresList: Driver<[GenreModel]>
+        var gotoTop: Driver<Void>
     }
     
     func transform(_ input: Input) -> Output {
@@ -53,35 +51,27 @@ extension SearchViewModel: ViewModelType {
             .withLatestFrom(input.selectionGenre) { ($0, $1) }
             .asObservable()
         
-        let getItems: () -> Observable<PagingInfo<SearchResultModel>> = {
+        let getItems: () -> Observable<PagingInfo<Movie>> = {
             return search
                 .take(1)
-                .flatMapLatest { arg -> Observable<PagingInfo<SearchResultModel>> in
-                    let (query, index) = arg
-                    if query.isEmpty {
-                        return self.usecase
-                            .getMovieBy(genre: self.usecase.getGenresID(index: index.row))
-                            .trackError(errorTracker)
-                    }
-                    return self.usecase.getMovieBy(keyword: query)
+                .flatMapLatest { arg -> Observable<PagingInfo<Movie>> in
+                    let (query, selectedItems) = arg
+                    let genres = self.usecase.getGenresID(indexList: selectedItems)
+                    return self.usecase
+                        .searchMovie(keyword: query, genres: genres)
                         .trackError(errorTracker)
                 }
         }
         
-        let loadMoreItems: (_ page: Int) -> Observable<PagingInfo<SearchResultModel>> = { page in
+        let loadMoreItems: (_ page: Int) -> Observable<PagingInfo<Movie>> = { page in
             return search
                 .take(1)
-                .flatMapLatest { arg -> Observable<PagingInfo<SearchResultModel>> in
-                    let (query, index) = arg
-                    if query.isEmpty {
-                        return self.usecase
-                            .loadMoreMovieBy(genre: self.usecase.getGenresID(index: index.row),
-                                             page: page)
-                            .trackError(errorTracker)
-                    }
+                .flatMapLatest { arg -> Observable<PagingInfo<Movie>> in
+                    let (query, selectedItems) = arg
+                    let genres = self.usecase.getGenresID(indexList: selectedItems)
+                    print(genres)
                     return self.usecase
-                        .loadMoreMovieByKeyword(keyword: query,
-                                                page: page)
+                        .loadMoreMovie(keyword: query, genres: genres, page: page)
                         .trackError(errorTracker)
                 }
         }
@@ -100,41 +90,42 @@ extension SearchViewModel: ViewModelType {
         
         let movieResult = page.map {
             [ResultSearchSection(model: "",
-                                 items: $0.items)]
+                                 items: $0.items.map {
+                                    SearchResultModel(movie: $0)
+                                 })]
         }
         .asDriverOnErrorJustComplete()
-        
-        let clearSelectedGenre = input.textSearch
-            .filter { !$0.isEmpty }
-            .mapToVoid()
         
         let movie = page
             .map { $0.items }
             .asDriverOnErrorJustComplete()
         
         let selectedMovie = input.selectionMovie
-            .withLatestFrom(movie) { $1[$0.row].movie }
+            .withLatestFrom(movie) { $1[$0.row] }
             .do(onNext: { movie in
                 self.navigator.toDetailScreen(movie: movie)
             })
+        
         let isEmptyData = checkIfDataIsEmpty(fetchItemsTrigger: fetchItems,
                                              loadTrigger: Driver.merge(loading,
                                                                        refreshing),
                                              items: movie)
+        let genresList = input.loadTrigger
+            .flatMapLatest {
+                self.usecase
+                    .getListGenres()
+                    .asDriverOnErrorJustComplete()
+            }
+        
         return Output(fetchItems: fetchItems,
                       error: Driver.merge(error, errorTracker.asDriver()),
                       loading: loading,
                       refreshing: refreshing,
                       loadingMore: loadingMore,
                       movieResult: movieResult,
-                      clearSelectedGenre: clearSelectedGenre,
-                      clearTextInSearchBar: input.selectionGenre
-                        .mapToVoid(),
-                      genresList: usecase
-                        .getListGenres()
-                        .asDriverOnErrorJustComplete(),
-                      gotoTop: loadTrigger,
                       selectedMovie: selectedMovie,
-                      isEmptyData: isEmptyData)
+                      isEmptyData: isEmptyData,
+                      genresList: genresList,
+                      gotoTop: loadTrigger)
     }
 }

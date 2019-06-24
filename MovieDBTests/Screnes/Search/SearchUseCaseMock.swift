@@ -12,30 +12,28 @@ import XCTest
 
 final class SearchUseCaseMock: SearchUseCaseType {
     
-    var movieListReturn: Observable<PagingInfo<SearchResultModel>> = {
-        let searchResult = SearchResultModel(movie: Movie().with { $0.id = 1 })
-        let page = PagingInfo<SearchResultModel> (page: 1,
-                                                  items: [searchResult])
+    var movieListReturn: Observable<PagingInfo<Movie>> = {
+        let movie = Movie().with { $0.id = 1 }
+        let page = PagingInfo<Movie> (page: 1,
+                                      items: [movie])
         return Observable.just(page)
     }()
-    var getMovieListByKeywordCalled: XCTestExpectation?
-    var getMovieByGenreCalled: XCTestExpectation!
+    var getMovieListCalled: XCTestExpectation?
+    var loadMoreMovieListCalled: XCTestExpectation?
     
-    func getMovieBy(keyword: String) -> Observable<PagingInfo<SearchResultModel>> {
-        getMovieListByKeywordCalled?.fulfill()
-        return loadMoreMovieByKeyword(keyword: keyword, page: 1)
+    func getGenresID(indexList: [IndexPath]) -> [Int] {
+        return indexList.map {
+            Array(Constants.genres.keys)[$0.row]
+        }
     }
     
-    func loadMoreMovieByKeyword(keyword: String, page: Int) -> Observable<PagingInfo<SearchResultModel>> {
-        return movieListReturn
+    func searchMovie(keyword: String, genres: [Int]) -> Observable<PagingInfo<Movie>> {
+        getMovieListCalled?.fulfill()
+        return loadMoreMovie(keyword: keyword, genres: genres, page: 1)
     }
     
-    func getMovieBy(genre: Int) -> Observable<PagingInfo<SearchResultModel>> {
-        getMovieByGenreCalled?.fulfill()
-        return loadMoreMovieBy(genre: genre, page: 1)
-    }
-    
-    func loadMoreMovieBy(genre: Int, page: Int) -> Observable<PagingInfo<SearchResultModel>> {
+    func loadMoreMovie(keyword: String, genres: [Int], page: Int) -> Observable<PagingInfo<Movie>> {
+        loadMoreMovieListCalled?.fulfill()
         return movieListReturn
     }
     
@@ -45,10 +43,6 @@ final class SearchUseCaseMock: SearchUseCaseType {
                 GenreModel(name: $0.value, id: $0.key)
             }
         return Observable.just(genreList)
-    }
-    
-    func getGenresID(index: Int) -> Int {
-        return Array(Constants.genres.keys)[index]
     }
 }
 

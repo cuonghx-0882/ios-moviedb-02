@@ -6,8 +6,6 @@
 //  Copyright © 2019 Sun*. All rights reserved.
 //
 
-import RxDataSources
-
 struct SearchResultModel {
     var movie: Movie
 }
@@ -39,16 +37,5 @@ extension SearchResultModel: MovieModelType {
     
     var releaseDate: String {
         return movie.releaseDate
-    }
-}
-
-extension SearchResultModel: IdentifiableType, Equatable {
-    
-    var identity: Int {
-        return movie.id
-    }
-    
-    static func == (lhs: SearchResultModel, rhs: SearchResultModel) -> Bool {
-        return lhs.movie.id == rhs.movie.id
     }
 }

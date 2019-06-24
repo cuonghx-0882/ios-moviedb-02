@@ -37,6 +37,7 @@ extension SearchAssembler where Self: DefaultAssembler {
     }
     
     func resolve() -> SearchUseCaseType {
-        return SearchUseCase(searchRepo: resolve())
+        return SearchUseCase(searchRepo: resolve(),
+                             movieRepo: resolve())
     }
 }
