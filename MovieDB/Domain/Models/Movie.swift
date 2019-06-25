@@ -49,3 +49,9 @@ extension Movie: Mappable {
 }
 
 extension Movie: Then { }
+
+extension Movie: ModelRealmableType {
+    var valuePrimaryKey: Int {
+        return id
+    }
+}

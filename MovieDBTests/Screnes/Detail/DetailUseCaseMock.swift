@@ -26,6 +26,7 @@ final class DetailUseCaseMock: DetailUseCaseType {
     var getTrailerLinkCalled = false
     var getActorListCalled = false
     var getProductCompany = false
+    var toggleFavoriteCalled = false
     var movieID: Int?
     
     // MARK: - Methods
@@ -45,5 +46,14 @@ final class DetailUseCaseMock: DetailUseCaseType {
         self.movieID = movieID
         getProductCompany = true
         return listProductionCompanyReturn
+    }
+    
+    func toggleFavorite(movie: Movie) -> Observable<Void> {
+        toggleFavoriteCalled = true
+        return .empty()
+    }
+    
+    func trackingFavorite(movie: Movie) -> Observable<Bool> {
+        return .empty()
     }
 }
