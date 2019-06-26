@@ -17,7 +17,7 @@ struct FavoriteListNavigator: FavoriteListNavigatorType {
     
     func showAlertDelete(movie: Movie) -> Observable<Movie> {
         let message = String(format: "Do you really want to delete \" %@ \" from favorites",
-                             movie.title)
+                             movie.title ?? "")
         return navigation.showAlertView(title: "Are you sure ?",
                                         message: message,
                                         style: .alert,

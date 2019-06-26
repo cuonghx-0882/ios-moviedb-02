@@ -31,7 +31,6 @@
 		957D310422C20FF700AB7803 /* FavoriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957D30FE22C20FF700AB7803 /* FavoriteViewModel.swift */; };
 		957D310722C2101500AB7803 /* FavoriteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957D310522C2101400AB7803 /* FavoriteRepository.swift */; };
 		957D310822C2101500AB7803 /* RealmRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957D310622C2101400AB7803 /* RealmRepository.swift */; };
-		957D310A22C2102900AB7803 /* MovieRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957D310922C2102900AB7803 /* MovieRealm.swift */; };
 		957D310C22C210CF00AB7803 /* RealmError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957D310B22C210CF00AB7803 /* RealmError.swift */; };
 		957D311D22C2168600AB7803 /* FavoriteListNavigatorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957D311A22C2168600AB7803 /* FavoriteListNavigatorMock.swift */; };
 		957D311E22C2168600AB7803 /* FavoriteListUseCaseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957D311B22C2168600AB7803 /* FavoriteListUseCaseMock.swift */; };
@@ -178,7 +177,6 @@
 		957D30FE22C20FF700AB7803 /* FavoriteViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteViewModel.swift; sourceTree = "<group>"; };
 		957D310522C2101400AB7803 /* FavoriteRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteRepository.swift; sourceTree = "<group>"; };
 		957D310622C2101400AB7803 /* RealmRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmRepository.swift; sourceTree = "<group>"; };
-		957D310922C2102900AB7803 /* MovieRealm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieRealm.swift; sourceTree = "<group>"; };
 		957D310B22C210CF00AB7803 /* RealmError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmError.swift; sourceTree = "<group>"; };
 		957D311822C2165500AB7803 /* FavoriteRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRepositoryTests.swift; sourceTree = "<group>"; };
 		957D311A22C2168600AB7803 /* FavoriteListNavigatorMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteListNavigatorMock.swift; sourceTree = "<group>"; };
@@ -402,7 +400,6 @@
 				957E923922B8BA110042CC4F /* KeyWord.swift */,
 				957E923722B8BA100042CC4F /* Movie.swift */,
 				957E923822B8BA110042CC4F /* Video.swift */,
-				957D310922C2102900AB7803 /* MovieRealm.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1148,7 +1145,6 @@
 				9569723C22BCD2AA00D8110F /* SearchRepository.swift in Sources */,
 				958A1CD122B771F3003938F1 /* AppAssembler.swift in Sources */,
 				9569723722BCD23100D8110F /* SearchResultModel.swift in Sources */,
-				957D310A22C2102900AB7803 /* MovieRealm.swift in Sources */,
 				95A8231A22BB454200B5C8CF /* DetailUseCase.swift in Sources */,
 				957E923122B8B9E30042CC4F /* API+TrailerLink.swift in Sources */,
 				957E923D22B8BA120042CC4F /* Movie.swift in Sources */,

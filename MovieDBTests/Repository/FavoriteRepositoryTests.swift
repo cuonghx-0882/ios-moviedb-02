@@ -57,4 +57,5 @@ final class FavoriteRepositoryTests: XCTestCase {
         
         XCTAssertFalse(tracker!)
     }
+    
 }

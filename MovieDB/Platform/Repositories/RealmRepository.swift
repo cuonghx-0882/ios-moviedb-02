@@ -11,22 +11,10 @@ import RealmSwift
 import RxRealm
 
 protocol RealmRepository {
-    
-    associatedtype ModelRealm
-    associatedtype ModelType
-    
-    static func map(from item: ModelType, to: ModelRealm)
-    static func item(from: ModelRealm) -> ModelType?
+
 }
 
-protocol ModelRealmableType {
-   
-    associatedtype PrimaryKey
-    
-    var valuePrimaryKey: PrimaryKey { get }
-}
-
-extension RealmRepository where ModelRealm: Object, ModelType: ModelRealmableType {
+extension RealmRepository {
     fileprivate func withRealm<T>(_ operation: String,
                                   action: (Realm) throws -> T) -> T? {
         do {
@@ -38,64 +26,60 @@ extension RealmRepository where ModelRealm: Object, ModelType: ModelRealmableTyp
         }
     }
     
-    func all() -> Observable<Results<ModelRealm>> {
-        let result = withRealm("get all") { realm -> Observable<Results<ModelRealm>> in
-            let realm = try Realm()
-            let object = realm.objects(ModelRealm.self)
-            return .collection(from: object)
+    func getAllItem<T: Object>() -> Observable<[T]> {
+        let result = withRealm("get all") { realm -> Observable<[T]> in
+            let object = realm.objects(T.self)
+            return Observable.collection(from: object)
+                .map {
+                    $0.toArray()
+                }
         }
         return result ?? .empty()
     }
     
-    func add(item: ModelType) -> Observable<Void> {
-        let result = withRealm("add new item") { realm -> Observable<Void> in
-            guard realm.object(ofType: ModelRealm.self,
-                               forPrimaryKey: item.valuePrimaryKey) == nil else {
-                                return .error(RealmError.itemExist)
-            }
+    func add<T: Object>(item: T) -> Observable<T> {
+        let result = withRealm("add new item") { realm -> Observable<T> in
             try realm.write {
-                let model = ModelRealm()
-                Self.map(from: item, to: model)
-                realm.add(model)
+                realm.add(item)
             }
-            return .empty()
+            return .just(item)
         }
         return result ?? .error(RealmError.addFail)
     }
     
-    func delete(item: ModelType) -> Observable<Void> {
+    func delete<T: Object>(item: T) -> Observable<Void> {
         let result = withRealm("delete") { realm -> Observable<Void> in
-            guard let object = realm.object(ofType: ModelRealm.self,
-                                            forPrimaryKey: item.valuePrimaryKey) else {
-                                                return .error(RealmError.deleteFail)
+            try realm.write {
+                realm.delete(item)
             }
-            try realm.write({
-                realm.delete(object)
-            })
             return .empty()
         }
         return result ?? .error(RealmError.deleteFail)
     }
-    
-    func toggle(item: ModelType) -> Observable<Void> {
+
+    func toggle<T: Object>(item: T) -> Observable<Void> {
         let result = withRealm("toggle") { realm -> Observable<Void> in
-            guard realm.object(ofType: ModelRealm.self,
-                               forPrimaryKey: item.valuePrimaryKey) != nil else {
-                                                return add(item: item)
+            guard let primaryKey = T.primaryKey(),
+                realm.object(ofType: T.self,
+                             forPrimaryKey: item.value(forKey: primaryKey)) != nil else {
+                                return add(item: item).mapToVoid()
             }
             return delete(item: item)
         }
         return result ?? .empty()
     }
-    
-    func tracking(item: ModelType)-> Observable<Bool> {
+
+    func tracking<T: Object>(item: T)-> Observable<Bool> {
         let result = withRealm("tracking") { realm -> Observable<Bool> in
-            let realm = try Realm()
-            let object = realm.objects(ModelRealm.self)
+            let object = realm.objects(T.self)
             return Observable.collection(from: object)
                 .map { results in
+                    guard let primaryKey = T.primaryKey(),
+                        let primaryValue = item.value(forKey: primaryKey) as? Int else {
+                            return false
+                    }
                     return !results.filter("id == %@",
-                                           item.valuePrimaryKey).isEmpty
+                                           primaryValue).isEmpty
                 }
         }
         return result ?? .empty()

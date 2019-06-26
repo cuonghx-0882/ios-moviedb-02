@@ -38,9 +38,9 @@ struct SearchUseCase: SearchUseCaseType {
             return movieRepo.getMovieList(category: .popular, page: page)
                 .map { pageInfo in
                     let movies = pageInfo.items
-                        .filter {
-                            genres.isEmpty || !Set($0.genres).isDisjoint(with: genres)
-                        }
+//                        .filter {
+////                            genres.isEmpty || !Set($0.genres).isDisjoint(with: genres)
+//                        }
                     return PagingInfo<Movie>(page: page, items: movies)
                 }
         }

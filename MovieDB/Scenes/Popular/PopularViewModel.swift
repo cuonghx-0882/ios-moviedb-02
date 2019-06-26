@@ -11,19 +11,20 @@ struct PopularViewModel {
 }
 
 extension PopularViewModel: MovieModelType {
+    
     var id: Int {
         return movie.id
     }
     
-    var title: String {
+    var title: String? {
         return movie.title
     }
     
     var genres: String {
-        return movie.genres.convertListGenres()
+        return movie.genres ?? ""
     }
     
-    var overview: String {
+    var overview: String? {
         return movie.overview
     }
     
@@ -31,11 +32,11 @@ extension PopularViewModel: MovieModelType {
         return movie.voteAverage / 2
     }
     
-    var posterPath: String {
+    var posterPath: String? {
         return movie.posterPath
     }
     
-    var releaseDate: String {
+    var releaseDate: String? {
         return movie.releaseDate
     }
 }
