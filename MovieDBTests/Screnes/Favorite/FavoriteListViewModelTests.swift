@@ -19,7 +19,7 @@ final class FavoriteListViewModelTests: XCTestCase {
     var input: FavoriteListViewModel.Input!
     var output: FavoriteListViewModel.Output!
     
-    let disposeBage = DisposeBag()
+    let disposeBag = DisposeBag()
     
     let selectionItem = PublishSubject<IndexPath>()
     let deletion = PublishSubject<IndexPath>()
@@ -39,13 +39,13 @@ final class FavoriteListViewModelTests: XCTestCase {
         let output = viewModel.transform(input)
         output.movieList
             .drive()
-            .disposed(by: disposeBage)
+            .disposed(by: disposeBag)
         output.deletedMovie
             .drive()
-            .disposed(by: disposeBage)
+            .disposed(by: disposeBag)
         output.selectedMovie
             .drive()
-            .disposed(by: disposeBage)
+            .disposed(by: disposeBag)
     }
     
     func test_loadTrigger_LoadMovieList() {

@@ -111,9 +111,6 @@ final class DetailViewController: UIViewController, BindableType {
             .drive(ytBaseView.isLoading)
             .disposed(by: rx.disposeBag)
         output.toggleFavorite
-            .drive()
-            .disposed(by: rx.disposeBag)
-        output.trackingFavorite
             .drive(trackingFavoriteButton)
             .disposed(by: rx.disposeBag)
     }

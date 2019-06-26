@@ -60,9 +60,6 @@ final class DetailViewModelTests: XCTestCase {
         output.toggleFavorite
             .drive()
             .disposed(by: disposeBage)
-        output.trackingFavorite
-            .drive()
-            .disposed(by: disposeBage)
     }
     
     func test_getActorListCalled() {

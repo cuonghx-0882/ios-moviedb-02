@@ -13,10 +13,14 @@ protocol FavoriteListUseCaseType {
 }
 
 struct FavoriteListUseCase: FavoriteListUseCaseType {
+    
     var favoriteRepo: FavoriteRepositoryType
     
     func getMovieList() -> Observable<[Movie]> {
         return favoriteRepo.getAll()
+            .map {
+                $0.map { $0.clone() }
+            }
     }
     
     func deleteMovie(movie: Movie) -> Observable<Void> {

@@ -6,77 +6,31 @@
 //  Copyright © 2019 Sun*. All rights reserved.
 //
 
-import Foundation
+import RealmSwift
 
 protocol FavoriteRepositoryType {
-    func add(_ item: Movie) -> Observable<Void>
+    func add(_ item: Movie) -> Observable<Movie>
     func getAll() -> Observable<[Movie]>
     func delete(_ item: Movie) -> Observable<Void>
-    func toggle(_ item: Movie) -> Observable<Void>
-    func tracking(_ item: Movie) -> Observable<Bool>
+    func checkItemExist(_ item: Movie) -> Bool
 }
 
 struct FavoriteRepository: FavoriteRepositoryType {
     
-    func add(_ item: Movie) -> Observable<Void> {
-        return add(item: item)
+    func add(_ item: Movie) -> Observable<Movie> {
+        return RealmManager.sharedInstance.addData(item: item.clone())
     }
     
     func getAll() -> Observable<[Movie]> {
-        return all()
-            .map {
-                $0.sorted(byKeyPath: "addDate", ascending: false)
-                    .toArray()
-                    .compactMap {
-                        FavoriteRepository.item(from: $0)
-                    }
-            }
+        return RealmManager.sharedInstance.getAllData()
     }
     
     func delete(_ item: Movie) -> Observable<Void> {
-        return delete(item: item)
+        return RealmManager.sharedInstance.deleteData(item: item.clone())
     }
     
-    func toggle(_ item: Movie) -> Observable<Void> {
-        return toggle(item: item)
-    }
-    
-    func tracking(_ item: Movie) -> Observable<Bool> {
-        return tracking(item: item)
+    func checkItemExist(_ item: Movie) -> Bool {
+        return RealmManager.sharedInstance.checkItemExist(item: item)
     }
 }
 
-extension FavoriteRepository: RealmRepository {
-    
-    static func map(from item: Movie, to: MovieRealm) {
-        to.id = item.id
-        to.genres = item.genres
-            .map { String(describing: $0) }
-            .joined(separator: ",")
-        to.overview = item.overview
-        to.posterPath = item.posterPath
-        to.releaseDate = item.title
-        to.voteAverage = item.voteAverage
-        to.title = item.title
-    }
-    
-    static func item(from: MovieRealm) -> Movie? {
-        guard let title = from.title,
-            let overview = from.overview,
-            let genres = from.genres,
-            let releaseDate = from.releaseDate,
-            let posterPath = from.posterPath else {
-                return nil
-        }
-        return Movie(id: from.id,
-                     title: title,
-                     overview: overview,
-                     genres: genres
-                        .components(separatedBy: ",")
-                        .compactMap { Int($0) },
-                     releaseDate: releaseDate,
-                     voteAverage: from.voteAverage,
-                     posterPath: posterPath,
-                     backdropPath: "")
-    }
-}

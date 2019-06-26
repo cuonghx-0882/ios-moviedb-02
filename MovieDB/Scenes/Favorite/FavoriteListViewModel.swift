@@ -24,7 +24,7 @@ extension FavoriteListViewModel: ViewModelType {
     
     struct Output {
         var movieList: Driver<[FavoriteMovieSection]>
-        var deletedMovie: Driver<Movie>
+        var deletedMovie: Driver<Void>
         var selectedMovie: Driver<Movie>
     }
     
@@ -52,9 +52,10 @@ extension FavoriteListViewModel: ViewModelType {
                 self.navigator.showAlertDelete(movie: $0)
                     .asDriverOnErrorJustComplete()
             }
-            .do(onNext: {
-                _ = self.usecase.deleteMovie(movie: $0)
-            })
+            .flatMapLatest {
+                self.usecase.deleteMovie(movie: $0)
+                    .asDriverOnErrorJustComplete()
+            }
         
         let selectedMovie = input.selection
             .withLatestFrom(movies) {

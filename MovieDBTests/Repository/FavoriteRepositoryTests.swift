@@ -11,7 +11,7 @@ import RealmSwift
 
 @testable import MovieDB
 
-// swiftlint:disable force_try force_unwrapping
+// swiftlint:disable force_try
 final class FavoriteRepositoryTests: XCTestCase {
     
     var repository: FavoriteRepositoryType!
@@ -22,39 +22,23 @@ final class FavoriteRepositoryTests: XCTestCase {
         repository = FavoriteRepository()
     }
     
-    func test_toggleMovie_NotInFavorite_Added() {
+    func test_add_movieToFavorite() {
         
-        _ = repository.toggle(Movie().with { $0.id = 1 })
-        
+        _ = repository.add(Movie().with { $0.id = 1 })
+
         let movies = try! repository.getAll().toBlocking().first()
         
         XCTAssert(movies?.count == 1)
+        XCTAssert(repository.checkItemExist(Movie().with { $0.id = 1 }))
     }
     
-    func test_toggleMovie_ExistInFavorite_RemoveFromFavorite() {
+    func test_deleted_movieFromFavorite() {
         
-        _ = repository.toggle(Movie().with { $0.id = 1 })
-        _ = repository.toggle(Movie().with { $0.id = 1 })
+        _ = repository.delete(Movie().with { $0.id = 1 })
         
         let movies = try! repository.getAll().toBlocking().first()
     
         XCTAssertEqual(movies?.count, 0)
     }
     
-    func test_trackingMovie_ExistInFavorite_ReturnTrue() {
-        let movie = Movie().with { $0.id = 1 }
-        
-        _ = repository.toggle(movie)
-        let tracker = try! repository.tracking(movie).toBlocking().first()
-        
-        XCTAssert(tracker!)
-    }
-    
-    func test_trackingMovie_NotExistInFavorite_ReturnFalse() {
-        let movie = Movie().with { $0.id = 1 }
-        
-        let tracker = try! repository.tracking(movie).toBlocking().first()
-        
-        XCTAssertFalse(tracker!)
-    }
 }
