@@ -15,7 +15,10 @@ struct FavoriteViewModel {
 extension FavoriteViewModel: MovieModelType {
     
     var id: Int {
-        return movie.id
+        if !movie.isInvalidated {
+            return movie.id
+        }
+        return 0
     }
     
     var title: String? {

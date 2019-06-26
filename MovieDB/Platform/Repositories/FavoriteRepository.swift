@@ -12,30 +12,25 @@ protocol FavoriteRepositoryType {
     func add(_ item: Movie) -> Observable<Movie>
     func getAll() -> Observable<[Movie]>
     func delete(_ item: Movie) -> Observable<Void>
-    func toggle(_ item: Movie) -> Observable<Void>
-    func tracking(_ item: Movie) -> Observable<Bool>
+    func checkItemExist(_ item: Movie) -> Bool
 }
 
-struct FavoriteRepository: FavoriteRepositoryType, RealmRepository {
+struct FavoriteRepository: FavoriteRepositoryType {
     
     func add(_ item: Movie) -> Observable<Movie> {
-        return add(item: item)
+        return RealmManager.sharedInstance.addData(item: item.clone())
     }
     
     func getAll() -> Observable<[Movie]> {
-        return getAllItem()
+        return RealmManager.sharedInstance.getAllData()
     }
     
     func delete(_ item: Movie) -> Observable<Void> {
-        return delete(item: item)
+        return RealmManager.sharedInstance.deleteData(item: item.clone())
     }
     
-    func toggle(_ item: Movie) -> Observable<Void> {
-        return toggle(item: item)
-    }
-    
-    func tracking(_ item: Movie) -> Observable<Bool> {
-        return tracking(item: item)
+    func checkItemExist(_ item: Movie) -> Bool {
+        return RealmManager.sharedInstance.checkItemExist(item: item)
     }
 }
 

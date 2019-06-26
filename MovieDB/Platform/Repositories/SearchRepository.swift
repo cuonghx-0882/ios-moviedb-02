@@ -19,11 +19,13 @@ struct SearchRepository: SearchRepositoryType {
                 guard var movies = output.movies else {
                     throw APIInvalidResponseError()
                 }
-//                movies = movies
-//                    .filter {
-//
-//                        genres.isEmpty || !Set($0.genres).isDisjoint(with: genres)
-//                    }
+                movies = movies
+                    .filter { movie in
+                        guard let genresList = movie.genresList, !genres.isEmpty else {
+                            return true
+                        }
+                        return !Set(genresList).isDisjoint(with: genres)
+                    }
                 return PagingInfo<Movie>(page: page, items: movies)
             }
     }

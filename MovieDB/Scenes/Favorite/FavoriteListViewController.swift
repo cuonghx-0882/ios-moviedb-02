@@ -14,7 +14,7 @@ final class FavoriteListViewController: UIViewController, BindableType {
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: - Propeties
-    typealias FavoriteMovieDataSource = RxTableViewSectionedReloadDataSource<FavoriteMovieSection>
+    typealias FavoriteMovieDataSource = RxTableViewSectionedAnimatedDataSource<FavoriteMovieSection>
     
     var viewModel: FavoriteListViewModel!
     private var dataSource: FavoriteMovieDataSource!

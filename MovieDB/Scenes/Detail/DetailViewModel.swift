@@ -30,8 +30,7 @@ extension DetailViewModel: ViewModelType {
         var companyList: Driver<[CompanySection]>
         var error: Driver<Error>
         var loadingTrailer: Driver<Bool>
-        var trackingFavorite: Driver<Bool>
-        var toggleFavorite: Driver<Void>
+        var toggleFavorite: Driver<Bool>
     }
     
     func transform(_ input: Input) -> Output {
@@ -74,20 +73,13 @@ extension DetailViewModel: ViewModelType {
                     }
                     .asDriverOnErrorJustComplete()
             }
-        
-        let trackingFavorite = input.loadTrigger
-            .flatMapLatest {
-                self.usecase.trackingFavorite(movie: self.movie)
-                    .trackError(errorTracker)
-                    .asDriverOnErrorJustComplete()
-            }
-        
+
         let toggleFavorite = input.toggleFavoriteTrigger
-            .flatMapLatest {
+            .flatMapLatest { _ in
                 self.usecase.toggleFavorite(movie: self.movie)
-                    .trackError(errorTracker)
                     .asDriverOnErrorJustComplete()
             }
+            .startWith(usecase.getStatusMovie(movie: movie))
         
         return Output(movie: Driver.just(movie),
                       trailerLink: trailerLink,
@@ -95,7 +87,6 @@ extension DetailViewModel: ViewModelType {
                       companyList: companyList,
                       error: errorTracker.asDriver(),
                       loadingTrailer: indicatorTrailerLink.asDriver(),
-                      trackingFavorite: trackingFavorite,
                       toggleFavorite: toggleFavorite)
     }
 }

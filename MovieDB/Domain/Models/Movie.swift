@@ -20,7 +20,7 @@ final class Movie: Object {
     @objc dynamic var posterPath: String?
     @objc dynamic var addDate = Date()
     
-    private var genresList: [Int]? {
+    var genresList: [Int]? {
         didSet {
             genres = genresList?.convertListGenres()
         }
@@ -44,5 +44,11 @@ extension Movie: Mappable {
         releaseDate <- map["release_date"]
         voteAverage <- map["vote_average"]
         posterPath <- map["poster_path"]
+    }
+}
+
+extension Movie {
+    func clone() -> Movie {
+        return Movie(value: self)
     }
 }
