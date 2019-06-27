@@ -11,6 +11,10 @@ import XCTest
 @testable import MovieDB
 
 final class FavoriteListUseCaseMock: FavoriteListUseCaseType {
+    func deleteMovie(movie: Movie) -> Observable<Bool> {
+        return .empty()
+    }
+    
     
     var expectationGetMovieListCalled: XCTestExpectation?
     var expectationDeleteMovieCalled: XCTestExpectation?
