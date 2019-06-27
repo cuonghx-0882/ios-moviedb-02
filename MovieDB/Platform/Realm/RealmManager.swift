@@ -37,18 +37,18 @@ struct RealmManager {
         }
     }
     
-    func deleteData<T: Object>(item: T) -> Observable<Void> {
+    func deleteData<T: Object>(item: T) -> Observable<Bool> {
         do {
             guard let primaryKey = T.primaryKey(),
                 let primaryValue = item.value(forKey: primaryKey) as? Int,
                 let object = realm.object(ofType: Movie.self,
                                           forPrimaryKey: primaryValue) else {
-                                            return .empty()
+                                            return .just(true)
             }
             try realm.write {
                 realm.delete(object)
             }
-            return .just(())
+            return .just(false)
         } catch {
             return .error(RealmError.deleteFail)
         }

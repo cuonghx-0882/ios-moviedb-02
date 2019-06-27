@@ -40,7 +40,6 @@ struct DetailUseCase: DetailUseCaseType {
     func toggleFavorite(movie: Movie) -> Observable<Bool> {
         if favoriteRepo.checkItemExist(movie) {
             return favoriteRepo.delete(movie)
-                .map { _ in false }
         }
         return favoriteRepo.add(movie)
             .map { _ in true }

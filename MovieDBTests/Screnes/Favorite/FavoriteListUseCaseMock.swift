@@ -25,7 +25,7 @@ final class FavoriteListUseCaseMock: FavoriteListUseCaseType {
         return movieReturn
     }
     
-    func deleteMovie(movie: Movie) -> Observable<Void> {
+    func deleteMovie(movie: Movie) -> Observable<Bool> {
         expectationDeleteMovieCalled?.fulfill()
         return .empty()
     }

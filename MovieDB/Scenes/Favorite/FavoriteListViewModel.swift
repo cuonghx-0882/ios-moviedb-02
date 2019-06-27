@@ -24,7 +24,7 @@ extension FavoriteListViewModel: ViewModelType {
     
     struct Output {
         var movieList: Driver<[FavoriteMovieSection]>
-        var deletedMovie: Driver<Void>
+        var deletedMovie: Driver<Bool>
         var selectedMovie: Driver<Movie>
     }
     

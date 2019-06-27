@@ -9,7 +9,7 @@ import Foundation
 
 protocol FavoriteListUseCaseType {
     func getMovieList() -> Observable<[Movie]>
-    func deleteMovie(movie: Movie) -> Observable<Void>
+    func deleteMovie(movie: Movie) -> Observable<Bool>
 }
 
 struct FavoriteListUseCase: FavoriteListUseCaseType {
@@ -18,12 +18,9 @@ struct FavoriteListUseCase: FavoriteListUseCaseType {
     
     func getMovieList() -> Observable<[Movie]> {
         return favoriteRepo.getAll()
-            .map {
-                $0.map { $0.clone() }
-            }
     }
     
-    func deleteMovie(movie: Movie) -> Observable<Void> {
+    func deleteMovie(movie: Movie) -> Observable<Bool> {
         return favoriteRepo.delete(movie)
     }
 }
